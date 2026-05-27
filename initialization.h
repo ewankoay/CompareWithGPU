@@ -22,12 +22,11 @@
 #define _INITIALIZATION_H
 
 #include "data_structure.h"
+#include "geometry.h"
 #include "parameter_reader.h"
 #include "sci_reader.h"
-#include "utility.h"
 #include "solver.h"
-#include "geometry.h"
-
+#include "utility.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Initialize the parameters
@@ -56,7 +55,7 @@ void set_default_parameter(PARA_DATA *para);
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-int set_initial_data (PARA_DATA *para, REAL **var, int **BINDEX);
+int set_initial_data(PARA_DATA *para, REAL **var, int **BINDEX);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Loop through all the BC cells and find if tiles there
@@ -67,14 +66,15 @@ int set_initial_data (PARA_DATA *para, REAL **var, int **BINDEX);
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-int if_exist_tiles(PARA_DATA *para, REAL **var, int **BINDEX) ;
+int if_exist_tiles(PARA_DATA *para, REAL **var, int **BINDEX);
 
 int init_para_simp(PARA_DATA *para, PARA_DATA_SIMP *para_simp);
 
-//flatten var
+// flatten var
 int flat_var(PARA_DATA *para, REAL **var, REAL *var_flat);
 // flatten bindex
 int flat_index(PARA_DATA *para, int **BINDEX, int *bindex_flat);
 int unflat_var(PARA_DATA *para, REAL **var, REAL *var_flat);
-
+int get_rack_data(PARA_DATA *para, REAL **var, int **BINDEX, int *rack_dir,
+                  REAL *rack_prop, int *map_matrix);
 #endif

@@ -175,7 +175,7 @@ int write_tecplot_data(PARA_DATA *para, REAL **var, char *name) {
   free(filename);
   fclose(datafile);
   return 0;
-} // write_tecplot_data()
+}  // write_tecplot_data()
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Write standard output data in a format for paraview in VTK (Visualization
@@ -268,10 +268,15 @@ int write_vtk_data(PARA_DATA *para, REAL **var, char *name) {
   fprintf(datafile, "POINT_DATA %d\n", (imax + 2) * (jmax + 2) * (kmax + 2));
 
   // Next three lines: Write scalar variable T
+  // if it is block or rack than print the initial temperature
   fprintf(datafile, "SCALARS T float 1\n");
   fprintf(datafile, "LOOKUP_TABLE default\n");
   FOR_ALL_CELL
-  fprintf(datafile, "%f\t", T[IX(i, j, k)]);
+  if (flagp[IX(i, j, k)] == SOLID || flagp[IX(i, j, k)] == RACK_INLET ||
+      flagp[IX(i, j, k)] == RACK_OUTLET)
+    fprintf(datafile, "%f\t", para->init->T);
+  else
+    fprintf(datafile, "%f\t", T[IX(i, j, k)]);
   END_FOR
   fprintf(datafile, "\n");
 
@@ -287,10 +292,14 @@ int write_vtk_data(PARA_DATA *para, REAL **var, char *name) {
   fprintf(datafile, "SCALARS VEL float 1\n");
   fprintf(datafile, "LOOKUP_TABLE default\n");
   FOR_ALL_CELL
-  fprintf(datafile, "%f\t",
-          sqrt(u[IX(i, j, k)] * u[IX(i, j, k)] +
-               v[IX(i, j, k)] * v[IX(i, j, k)] +
-               w[IX(i, j, k)] * w[IX(i, j, k)]));
+  if (flagp[IX(i, j, k)] == SOLID || flagp[IX(i, j, k)] == RACK_INLET ||
+      flagp[IX(i, j, k)] == RACK_OUTLET)
+    fprintf(datafile, "%f\t", 0.000000);
+  else
+    fprintf(datafile, "%f\t",
+            sqrt(u[IX(i, j, k)] * u[IX(i, j, k)] +
+                 v[IX(i, j, k)] * v[IX(i, j, k)] +
+                 w[IX(i, j, k)] * w[IX(i, j, k)]));
   END_FOR
   fprintf(datafile, "\n");
 
@@ -333,13 +342,185 @@ int write_vtk_data(PARA_DATA *para, REAL **var, char *name) {
 
   // write to the stream
   // FIXME: need to talk to Mike about the coordinate
+  /*
   FOR_ALL_CELL_IJK
   fprintf(stdout, "%f\t%f\t%f\n", u[IX(i, j, k)], v[IX(i, j, k)],
           w[IX(i, j, k)]);
   END_FOR
-
+  */
   return 0;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+/// Write the data to standard out in JSON format
+///\param para Pointer to FFD parameters
+///\param var Pointer to FFD simulation variables
+///\param name Pointer to file name
+///
+///\return 0 if no error occurred
+///////////////////////////////////////////////////////////////////////////////
+int write_stdout(PARA_DATA *para, REAL **var, int **BINDEX) {
+  int i, j, k;
+  int imax = para->geom->imax, jmax = para->geom->jmax;
+  int kmax = para->geom->kmax;
+  int IMAX = imax + 2, IJMAX = (imax + 2) * (jmax + 2);
+  int size = IJMAX * (kmax + 2);
+  REAL *u = var[VXM], *v = var[VYM], *w = var[VZM], *p = var[IP];
+  REAL *T = var[TEMPM];
+  REAL *u_face, *v_face, *w_face;
+  char tile_name[1000], tmp[1000];
+  int nTiles = 0, count = 0;
+  // allocate memory
+  u_face = (REAL *)malloc(size * sizeof(REAL));
+  v_face = (REAL *)malloc(size * sizeof(REAL));
+  w_face = (REAL *)malloc(size * sizeof(REAL));
+  // initiate face velocities
+  for (i = 0; i < size; i++) {
+    u_face[i] = u[i];
+    v_face[i] = v[i];
+    w_face[i] = w[i];
+  }
+  // center velocity
+  convert_to_tecplot(para, var);
+  // check if there is any perforated tiles
+  nTiles = check_num_tiles(para, var, BINDEX);
+  if (nTiles > 0) {
+    // start writing flow rate
+    fprintf(stdout, "{\"tile_ids\":");
+    fprintf(stdout, "[");
+    // write flow tile results
+    for (i = 0; i < para->bc->nb_port; i++) {
+      // check if it is tile
+      if (strstr(para->bc->portName[i], "Tile") != NULL) {
+        // count
+        count += 1;
+        // copy name to local memory
+        sscanf(para->bc->portName[i], "%s%s", tile_name, tmp);
+        // chop the identifier
+        chopN(tile_name, 4);
+        // start writing tile name and tile flow rate
+        if (count == nTiles)
+          fprintf(stdout, "\"%s\"", tile_name);
+        else
+          fprintf(stdout, "\"%s\",", tile_name);
+      }
+    }
+    fprintf(stdout, "],\n");
+
+    // start writing tile name
+    count = 0;
+    fprintf(stdout, "\"tile_flowrate\":");
+    fprintf(stdout, "[");
+    // write flow tile results
+    for (i = 0; i < para->bc->nb_port; i++) {
+      // check if it is tile
+      if (strstr(para->bc->portName[i], "Tile") != NULL) {
+        // count
+        count += 1;
+        // start writing tile name and tile flow rate
+        if (count == nTiles)
+          fprintf(stdout, "%.6f", para->bc->QPort[i]);
+        else
+          fprintf(stdout, "%.6f,", para->bc->QPort[i]);
+      }
+    }
+    fprintf(stdout, "],\n");
+  } else {
+    // empty dictionary
+    fprintf(stdout, "{\"tile_ids\":[],\n");
+    fprintf(stdout, "\"tile_flowrate\":[],\n");
+  }
+
+  // write U velocity
+  fprintf(stdout, "\"velocity_u\":[");
+  FOR_EACH_CELL_IJK
+  if (i == imax && j == jmax && k == kmax)
+    fprintf(stdout, "%.6f", u[IX(i, j, k)]);
+  else
+    fprintf(stdout, "%.6f,", u[IX(i, j, k)]);
+  END_FOR
+  fprintf(stdout, "],\n");
+
+  // write V velocity
+  fprintf(stdout, "\"velocity_v\":[");
+  FOR_EACH_CELL_IJK
+  if (i == imax && j == jmax && k == kmax)
+    fprintf(stdout, "%.6f", v[IX(i, j, k)]);
+  else
+    fprintf(stdout, "%.6f,", v[IX(i, j, k)]);
+  END_FOR
+  fprintf(stdout, "],\n");
+
+  // write W velocity
+  fprintf(stdout, "\"velocity_w\":[");
+  FOR_EACH_CELL_IJK
+  if (i == imax && j == jmax && k == kmax)
+    fprintf(stdout, "%.6f", w[IX(i, j, k)]);
+  else
+    fprintf(stdout, "%.6f,", w[IX(i, j, k)]);
+  END_FOR
+  fprintf(stdout, "],\n");
+
+  // write U_face velocity
+  fprintf(stdout, "\"velocity_u_face\":[");
+  FOR_EACH_CELL_IJK
+  if (i == imax && j == jmax && k == kmax)
+    fprintf(stdout, "%.6f", u_face[IX(i, j, k)]);
+  else
+    fprintf(stdout, "%.6f,", u_face[IX(i, j, k)]);
+  END_FOR
+  fprintf(stdout, "],\n");
+
+  // write V_face velocity
+  fprintf(stdout, "\"velocity_v_face\":[");
+  FOR_EACH_CELL_IJK
+  if (i == imax && j == jmax && k == kmax)
+    fprintf(stdout, "%.6f", v_face[IX(i, j, k)]);
+  else
+    fprintf(stdout, "%.6f,", v_face[IX(i, j, k)]);
+  END_FOR
+  fprintf(stdout, "],\n");
+
+  // write W_face velocity
+  fprintf(stdout, "\"velocity_w_face\":[");
+  FOR_EACH_CELL_IJK
+  if (i == imax && j == jmax && k == kmax)
+    fprintf(stdout, "%.6f", w_face[IX(i, j, k)]);
+  else
+    fprintf(stdout, "%.6f,", w_face[IX(i, j, k)]);
+  END_FOR
+  fprintf(stdout, "],\n");
+
+  // write T
+  fprintf(stdout, "\"temperature\":[");
+  FOR_EACH_CELL_IJK
+  if (i == imax && j == jmax && k == kmax)
+    fprintf(stdout, "%.6f", T[IX(i, j, k)]);
+  else
+    fprintf(stdout, "%.6f,", T[IX(i, j, k)]);
+  END_FOR
+  fprintf(stdout, "],\n");
+
+  // write P
+  fprintf(stdout, "\"pressure\":[");
+  FOR_EACH_CELL_IJK
+  if (i == imax && j == jmax && k == kmax)
+    fprintf(stdout, "%.6f", p[IX(i, j, k)]);
+  else
+    fprintf(stdout, "%.6f,", p[IX(i, j, k)]);
+  END_FOR
+  fprintf(stdout, "]\n");
+
+  // end
+  fprintf(stdout, "}");
+
+  // free memory
+  free(u_face);
+  free(v_face);
+  free(w_face);
+
+  return 0;
+}  // write_vtk_fluid()
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Write standard output data in a format for paraview in VTK (Visualization
@@ -359,9 +540,8 @@ int write_vtk_fluid(PARA_DATA *para, REAL **var, char *name) {
   int IMAX = imax + 2, IJMAX = (imax + 2) * (jmax + 2);
   REAL *x = var[X], *y = var[Y], *z = var[Z];
   REAL *u = var[VXM], *v = var[VYM], *w = var[VZM], *p = var[IP];
-  REAL *T = var[TEMPM], *Xi = var[Xi1];
+  REAL *T = var[TEMPM];
   REAL *flagp = var[FLAGP];
-  int CellNum = 0;
   char *filename;
   FILE *datafile;
 
@@ -372,17 +552,17 @@ int write_vtk_fluid(PARA_DATA *para, REAL **var, char *name) {
   ****************************************************************************/
   filename = (char *)malloc((strlen(name) + 5) * sizeof(char));
   if (filename == NULL) {
-    ffd_log("write_tecplot_fluid(): Failed to allocate memory for file name",
+    ffd_log("write_tecplot_data(): Failed to allocate memory for file name",
             FFD_ERROR);
     return 1;
   }
 
   strcpy(filename, name);
-  strcat(filename, "_fluid.vtk");
+  strcat(filename, ".vtk");
 
   // Open output file
   if ((datafile = fopen(filename, "w+")) == NULL) {
-    ffd_log("write_vtk_fluid(): Failed to open output file!\n", FFD_ERROR);
+    ffd_log("write_vtk_data(): Failed to open output file!\n", FFD_ERROR);
     return 1;
   }
 
@@ -430,33 +610,25 @@ int write_vtk_fluid(PARA_DATA *para, REAL **var, char *name) {
   fprintf(datafile, "\n");
 
   // Next line: Number of data point
-  // Count the number of fluid cells
-  CellNum = 0;
-  for (i = 1; i <= imax; i++) {
-    for (j = 1; j <= jmax; j++) {
-      for (k = 1; k <= kmax; k++) {
-        if (flagp[IX(i, j, k)] == FLUID) {
-          CellNum++;
-        } else {
-          continue;
-        }
-      }
-    }
-  }
-  fprintf(datafile, "POINT_DATA %d\n", CellNum);
+  fprintf(datafile, "POINT_DATA %d\n", (imax) * (jmax) * (kmax));
 
   // Next three lines: Write scalar variable T
+  // if it is block or rack than print the initial temperature
   fprintf(datafile, "SCALARS T float 1\n");
   fprintf(datafile, "LOOKUP_TABLE default\n");
-  FOR_EACH_CELL
-  fprintf(datafile, "%f\t", T[IX(i, j, k)]);
+  FOR_EACH_CELL_KJI
+  if (flagp[IX(i, j, k)] == SOLID || flagp[IX(i, j, k)] == RACK_INLET ||
+      flagp[IX(i, j, k)] == RACK_OUTLET)
+    fprintf(datafile, "%f\t", para->init->T);
+  else
+    fprintf(datafile, "%f\t", T[IX(i, j, k)]);
   END_FOR
   fprintf(datafile, "\n");
 
   // Next three lines: Write scalar variable P
   fprintf(datafile, "SCALARS P float 1\n");
   fprintf(datafile, "LOOKUP_TABLE default\n");
-  FOR_EACH_CELL
+  FOR_EACH_CELL_KJI
   fprintf(datafile, "%f\t", p[IX(i, j, k)]);
   END_FOR
   fprintf(datafile, "\n");
@@ -464,18 +636,21 @@ int write_vtk_fluid(PARA_DATA *para, REAL **var, char *name) {
   // Next three lines: Write scalar speed VEL
   fprintf(datafile, "SCALARS VEL float 1\n");
   fprintf(datafile, "LOOKUP_TABLE default\n");
-  FOR_EACH_CELL
-  fprintf(datafile, "%f\t",
-          sqrt(u[IX(i, j, k)] * u[IX(i, j, k)] +
-               v[IX(i, j, k)] * v[IX(i, j, k)] +
-               w[IX(i, j, k)] * w[IX(i, j, k)]));
+  FOR_EACH_CELL_KJI
+  if (flagp[IX(i, j, k)] >= 0)
+    fprintf(datafile, "%f\t", 0.000000);
+  else
+    fprintf(datafile, "%f\t",
+            sqrt(u[IX(i, j, k)] * u[IX(i, j, k)] +
+                 v[IX(i, j, k)] * v[IX(i, j, k)] +
+                 w[IX(i, j, k)] * w[IX(i, j, k)]));
   END_FOR
   fprintf(datafile, "\n");
 
   // Next three lines: Write scalar U
   fprintf(datafile, "SCALARS U float 1\n");
   fprintf(datafile, "LOOKUP_TABLE default\n");
-  FOR_EACH_CELL
+  FOR_EACH_CELL_KJI
   fprintf(datafile, "%f\t", u[IX(i, j, k)]);
   END_FOR
   fprintf(datafile, "\n");
@@ -483,7 +658,7 @@ int write_vtk_fluid(PARA_DATA *para, REAL **var, char *name) {
   // Next three lines: Write scalar V
   fprintf(datafile, "SCALARS V float 1\n");
   fprintf(datafile, "LOOKUP_TABLE default\n");
-  FOR_EACH_CELL
+  FOR_EACH_CELL_KJI
   fprintf(datafile, "%f\t", v[IX(i, j, k)]);
   END_FOR
   fprintf(datafile, "\n");
@@ -491,25 +666,190 @@ int write_vtk_fluid(PARA_DATA *para, REAL **var, char *name) {
   // Next three lines: Write scalar W
   fprintf(datafile, "SCALARS W float 1\n");
   fprintf(datafile, "LOOKUP_TABLE default\n");
-  FOR_EACH_CELL
+  FOR_EACH_CELL_KJI
   fprintf(datafile, "%f\t", w[IX(i, j, k)]);
   END_FOR
   fprintf(datafile, "\n");
 
   // From lines: Write velocity vector
   fprintf(datafile, "VECTORS velocity float\n");
-  FOR_EACH_CELL
+  FOR_EACH_CELL_KJI
   fprintf(datafile, "%f\t%f\t%f\n", u[IX(i, j, k)], v[IX(i, j, k)],
           w[IX(i, j, k)]);
   END_FOR
 
-  sprintf(msg, "write_vtk_fluid(): Wrote file %s.", filename);
+  sprintf(msg, "write_vtk_data(): Wrote file %s.", filename);
   ffd_log(msg, FFD_NORMAL);
 
   free(filename);
   fclose(datafile);
   return 0;
-} // write_vtk_fluid()
+}  // write_vtk_fluid()
+
+///////////////////////////////////////////////////////////////////////////////
+/// Write standard output data in a format for paraview in VTK in ZYX
+/// direction(Visualization Toolkit)
+/// http://www.vtk.org/wp-content/uploads/2015/04/file-formats.pdf
+///\Wei Tian
+///\ 6/1/2017, Andover, MA
+///\param para Pointer to FFD parameters
+///\param var Pointer to FFD simulation variables
+///\param name Pointer to file name
+///
+///\return 0 if no error occurred
+///////////////////////////////////////////////////////////////////////////////
+int write_vtk_fluid_kji(PARA_DATA *para, REAL **var, char *name) {
+  int i, j, k;
+  int imax = para->geom->imax, jmax = para->geom->jmax;
+  int kmax = para->geom->kmax;
+  int IMAX = imax + 2, IJMAX = (imax + 2) * (jmax + 2);
+  REAL *x = var[X], *y = var[Y], *z = var[Z];
+  REAL *u = var[VXM], *v = var[VYM], *w = var[VZM], *p = var[IP];
+  REAL *T = var[TEMPM];
+  REAL *flagp = var[FLAGP];
+  char *filename;
+  FILE *datafile;
+
+  /****************************************************************************
+  | Allocate memory for filename
+  | Length of filename should be sizeof(ActualName) + 1
+  | Using sizeof(ActualName) will cause memory fault in free(filename)
+  ****************************************************************************/
+  filename = (char *)malloc((strlen(name) + 5) * sizeof(char));
+  if (filename == NULL) {
+    ffd_log("write_tecplot_data(): Failed to allocate memory for file name",
+            FFD_ERROR);
+    return 1;
+  }
+
+  strcpy(filename, name);
+  strcat(filename, ".vtk");
+
+  // Open output file
+  if ((datafile = fopen(filename, "w+")) == NULL) {
+    ffd_log("write_vtk_data(): Failed to open output file!\n", FFD_ERROR);
+    return 1;
+  }
+
+  convert_to_tecplot(para, var);
+  // See file of the attached link for detail
+  // first line: the version of the VTK format
+  fprintf(datafile, "# vtk DataFile Version 2.0\n");
+  // Next line: title
+  fprintf(datafile, "FFDResults\n");
+
+  // Next line: data type
+  fprintf(datafile, "ASCII\n");
+
+  // Next line: geometry type
+  fprintf(datafile, "DATASET RECTILINEAR_GRID\n");
+
+  // Next line: dimensions
+  fprintf(datafile, "DIMENSIONS\t%d\t%d\t%d\n", kmax, jmax, imax);
+
+  // Next line: Z direction coordinate number
+  fprintf(datafile, "X_COORDINATES %d float\n", kmax);
+
+  // Next line: Z direction coordinate
+  for (i = 1; i <= kmax; i++) {
+    fprintf(datafile, "%f\t", z[IX(imax, jmax, i)]);
+  }
+  fprintf(datafile, "\n");
+
+  // Next line: Y direction coordinate number
+  fprintf(datafile, "Y_COORDINATES %d float\n", jmax);
+
+  // Next line: Y direction coordinate
+  for (i = 1; i <= jmax; i++) {
+    fprintf(datafile, "%f\t", y[IX(imax, i, kmax)]);
+  }
+  fprintf(datafile, "\n");
+
+  // Next line: X direction coordinate number
+  fprintf(datafile, "Z_COORDINATES %d float\n", imax);
+
+  // Next line: X direction coordinate
+  for (i = 1; i <= imax; i++) {
+    fprintf(datafile, "%f\t", x[IX(i, jmax, kmax)]);
+  }
+  fprintf(datafile, "\n");
+
+  // Next line: Number of data point
+  fprintf(datafile, "POINT_DATA %d\n", (imax) * (jmax) * (kmax));
+
+  // Next three lines: Write scalar variable T
+  // if it is block or rack than print the initial temperature
+  fprintf(datafile, "SCALARS T float 1\n");
+  fprintf(datafile, "LOOKUP_TABLE default\n");
+  FOR_EACH_CELL_IJK
+  if (flagp[IX(i, j, k)] == SOLID || flagp[IX(i, j, k)] == RACK_INLET ||
+      flagp[IX(i, j, k)] == RACK_OUTLET)
+    fprintf(datafile, "%f\t", para->init->T);
+  else
+    fprintf(datafile, "%f\t", T[IX(i, j, k)]);
+  END_FOR
+  fprintf(datafile, "\n");
+
+  // Next three lines: Write scalar variable P
+  fprintf(datafile, "SCALARS P float 1\n");
+  fprintf(datafile, "LOOKUP_TABLE default\n");
+  FOR_EACH_CELL_IJK
+  fprintf(datafile, "%f\t", p[IX(i, j, k)]);
+  END_FOR
+  fprintf(datafile, "\n");
+
+  // Next three lines: Write scalar speed VEL
+  fprintf(datafile, "SCALARS VEL float 1\n");
+  fprintf(datafile, "LOOKUP_TABLE default\n");
+  FOR_EACH_CELL_IJK
+  if (flagp[IX(i, j, k)] >= 0)
+    fprintf(datafile, "%f\t", 0.000000);
+  else
+    fprintf(datafile, "%f\t",
+            sqrt(u[IX(i, j, k)] * u[IX(i, j, k)] +
+                 v[IX(i, j, k)] * v[IX(i, j, k)] +
+                 w[IX(i, j, k)] * w[IX(i, j, k)]));
+  END_FOR
+  fprintf(datafile, "\n");
+
+  // Next three lines: Write scalar U
+  fprintf(datafile, "SCALARS U float 1\n");
+  fprintf(datafile, "LOOKUP_TABLE default\n");
+  FOR_EACH_CELL_IJK
+  fprintf(datafile, "%f\t", u[IX(i, j, k)]);
+  END_FOR
+  fprintf(datafile, "\n");
+
+  // Next three lines: Write scalar V
+  fprintf(datafile, "SCALARS V float 1\n");
+  fprintf(datafile, "LOOKUP_TABLE default\n");
+  FOR_EACH_CELL_IJK
+  fprintf(datafile, "%f\t", v[IX(i, j, k)]);
+  END_FOR
+  fprintf(datafile, "\n");
+
+  // Next three lines: Write scalar W
+  fprintf(datafile, "SCALARS W float 1\n");
+  fprintf(datafile, "LOOKUP_TABLE default\n");
+  FOR_EACH_CELL_IJK
+  fprintf(datafile, "%f\t", w[IX(i, j, k)]);
+  END_FOR
+  fprintf(datafile, "\n");
+
+  // From lines: Write velocity vector
+  fprintf(datafile, "VECTORS velocity float\n");
+  FOR_EACH_CELL_IJK
+  fprintf(datafile, "%f\t%f\t%f\n", u[IX(i, j, k)], v[IX(i, j, k)],
+          w[IX(i, j, k)]);
+  END_FOR
+
+  sprintf(msg, "write_vtk_data(): Wrote file %s.", filename);
+  ffd_log(msg, FFD_NORMAL);
+
+  free(filename);
+  fclose(datafile);
+  return 0;
+}  // write_vtk_fluid_kji()
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Write all available data in a format for tecplot
@@ -623,7 +963,7 @@ int write_tecplot_all_data(PARA_DATA *para, REAL **var, char *name) {
   free(filename);
 
   return 0;
-} // write_tecplot_all_data()
+}  // write_tecplot_all_data()
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Convert the data to the format for Tecplot
@@ -687,7 +1027,7 @@ void convert_to_tecplot(PARA_DATA *para, REAL **var) {
   convert_to_tecplot_corners(para, var, d);
   convert_to_tecplot_corners(para, var, T);
   convert_to_tecplot_corners(para, var, Tm);
-} // End of convert_to_tecplot()
+}  // End of convert_to_tecplot()
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Convert the data at 8 corners to the format for Tecplot
@@ -741,7 +1081,7 @@ void convert_to_tecplot_corners(PARA_DATA *para, REAL **var, REAL *psi) {
       (psi[IX(imax, jmax + 1, 0)] + psi[IX(imax + 1, jmax, 0)] +
        psi[IX(imax + 1, jmax + 1, kmax)]) /
       (REAL)3.0;
-} // End of convert_to_tecplot_corners()
+}  // End of convert_to_tecplot_corners()
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Write the instantaneous value of variables in Tecplot format
@@ -798,7 +1138,7 @@ int write_unsteady(PARA_DATA *para, REAL **var, char *name) {
   free(filename);
   fclose(datafile);
   return 0;
-} // write_unsteady()
+}  // write_unsteady()
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Write the data in a format for SCI program
@@ -1015,4 +1355,4 @@ int write_SCI(PARA_DATA *para, REAL **var, char *name) {
   free(filename);
   return 0;
 
-} // End of write_SCI()
+}  // End of write_SCI()

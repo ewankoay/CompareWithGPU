@@ -32,12 +32,11 @@
 #ifndef _ADVECTION_H
 #define _ADVECTION_H
 
-#include "data_structure.h"
-#include "utility.h"
 #include "boundary.h"
+#include "data_structure.h"
 #include "interpolation.h"
 #include "solver.h"
-
+#include "utility.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Entrance of advection step
@@ -55,8 +54,8 @@
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-int advect(PARA_DATA *para, REAL **var, int var_type, int index,
-           REAL *d, REAL *d0, int **BINDEX);
+int advect(PARA_DATA *para, REAL **var, int var_type, int index, REAL *d,
+           REAL *d0, int **BINDEX);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Advection for velocity at X-direction
@@ -103,7 +102,6 @@ int trace_vy(PARA_DATA *para, REAL **var, int var_type, REAL *d, REAL *d0,
 int trace_vz(PARA_DATA *para, REAL **var, int var_type, REAL *d, REAL *d0,
              int **BINDEX);
 
-
 ///////////////////////////////////////////////////////////////////////////////
 /// Advection for scalar variables located in the center of control volume
 ///
@@ -117,8 +115,8 @@ int trace_vz(PARA_DATA *para, REAL **var, int var_type, REAL *d, REAL *d0,
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-int trace_scalar(PARA_DATA *para, REAL **var, int var_type, int index,
-                 REAL *d, REAL *d0, int **BINDEX);
+int trace_scalar(PARA_DATA *para, REAL **var, int var_type, int index, REAL *d,
+                 REAL *d0, int **BINDEX);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Find the X-location and coordinates at previous time step
@@ -142,8 +140,8 @@ int trace_scalar(PARA_DATA *para, REAL **var, int var_type, int index,
 ///\return void No return needed
 ///////////////////////////////////////////////////////////////////////////////
 void set_x_location(PARA_DATA *para, REAL **var, REAL *flag, REAL *x, REAL u0,
-                    int i, int j, int k,
-                    REAL *OL, int *OC, int *LOC , int *COOD);
+                    int i, int j, int k, REAL *OL, int *OC, int *LOC,
+                    int *COOD);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Find the Y-location and coordinates at previous time step
@@ -167,8 +165,8 @@ void set_x_location(PARA_DATA *para, REAL **var, REAL *flag, REAL *x, REAL u0,
 ///\return void No return needed
 ///////////////////////////////////////////////////////////////////////////////
 void set_y_location(PARA_DATA *para, REAL **var, REAL *flag, REAL *y, REAL v0,
-                    int i, int j, int k,
-                    REAL *OL, int *OC, int *LOC , int *COOD);
+                    int i, int j, int k, REAL *OL, int *OC, int *LOC,
+                    int *COOD);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Find the Z-location and coordinates at previous time step
@@ -192,13 +190,18 @@ void set_y_location(PARA_DATA *para, REAL **var, REAL *flag, REAL *y, REAL v0,
 ///\return void No return needed
 ///////////////////////////////////////////////////////////////////////////////
 void set_z_location(PARA_DATA *para, REAL **var, REAL *flag, REAL *z, REAL w0,
-                    int i, int j, int k,
-                    REAL *OL, int *OC, int *LOC , int *COOD);
+                    int i, int j, int k, REAL *OL, int *OC, int *LOC,
+                    int *COOD);
 
-int coef_adv(PARA_DATA *para, REAL **var, REAL *psi, REAL *psi0, int var_type, int index, int **BINDEX);
-int implicit_vx(PARA_DATA *para, REAL **var, int var_type, REAL *d, REAL *d0, int index, int ** BINDEX);
-int implicit_vy(PARA_DATA *para, REAL **var, int var_type, REAL *d, REAL *d0, int index, int ** BINDEX);
-int implicit_vz(PARA_DATA *para, REAL **var, int var_type, REAL *d, REAL *d0, int index, int ** BINDEX);
-int implicit_scalar(PARA_DATA *para, REAL **var, int var_type, REAL *d, REAL *d0, int index, int ** BINDEX);
+int coef_adv(PARA_DATA *para, REAL **var, REAL *psi, REAL *psi0, int var_type,
+             int index, int **BINDEX);
+int implicit_vx(PARA_DATA *para, REAL **var, int var_type, REAL *d, REAL *d0,
+                int index, int **BINDEX);
+int implicit_vy(PARA_DATA *para, REAL **var, int var_type, REAL *d, REAL *d0,
+                int index, int **BINDEX);
+int implicit_vz(PARA_DATA *para, REAL **var, int var_type, REAL *d, REAL *d0,
+                int index, int **BINDEX);
+int implicit_scalar(PARA_DATA *para, REAL **var, int var_type, REAL *d,
+                    REAL *d0, int index, int **BINDEX);
 
 #endif

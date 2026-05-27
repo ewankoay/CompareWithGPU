@@ -33,7 +33,6 @@
 
 #include "chen_zero_equ_model.h"
 
-
 ///////////////////////////////////////////////////////////////////////////////
 /// Entrance of calculating diffusion equation
 ///
@@ -47,8 +46,8 @@
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-int diffusion(PARA_DATA *para, REAL **var, int var_type, int index,
-               REAL *psi, REAL *psi0, int **BINDEX);
+int diffusion(PARA_DATA *para, REAL **var, int var_type, int index, REAL *psi,
+              REAL *psi0, int **BINDEX);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Calculate coefficients for diffusion equation solver
@@ -63,8 +62,8 @@ int diffusion(PARA_DATA *para, REAL **var, int var_type, int index,
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-int coef_diff(PARA_DATA *para, REAL **var, REAL *psi, REAL *psi0,
-               int var_type, int index, int **BINDEX);
+int coef_diff(PARA_DATA *para, REAL **var, REAL *psi, REAL *psi0, int var_type,
+              int index, int **BINDEX);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Calculate source term in the diffusion equation

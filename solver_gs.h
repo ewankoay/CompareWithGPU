@@ -27,7 +27,6 @@
 
 #include "utility.h"
 
-
 ///////////////////////////////////////////////////////////////////////////////
 /// Gauss-Seidel scheme
 ///
@@ -50,7 +49,8 @@ int GS_itr(PARA_DATA *para, REAL **var, REAL *x, REAL *flag, int num_swipe);
 ///
 ///\return Residual
 ///////////////////////////////////////////////////////////////////////////////
-int Gauss_Seidel(PARA_DATA *para, REAL **var, REAL *x, REAL *flagp, int num_swipe);
+int Gauss_Seidel(PARA_DATA *para, REAL **var, REAL *x, REAL *flagp,
+                 int num_swipe);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Jacobi Scheme for pressure
@@ -62,7 +62,8 @@ int Gauss_Seidel(PARA_DATA *para, REAL **var, REAL *x, REAL *flagp, int num_swip
 ///
 ///\return Residual
 ///////////////////////////////////////////////////////////////////////////////
-int Jacobi_iter(PARA_DATA *para, REAL **var, REAL *x, REAL *flag, int num_swipe);
+int Jacobi_iter(PARA_DATA *para, REAL **var, REAL *x, REAL *flag,
+                int num_swipe);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Jacobi solver for pressure

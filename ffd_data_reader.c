@@ -29,14 +29,14 @@
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
 int read_ffd_data(PARA_DATA *para, REAL **var) {
-  int i,j, k;
+  int i, j, k;
   int imax = para->geom->imax;
   int jmax = para->geom->jmax;
   int kmax = para->geom->kmax;
-  int IMAX = imax+2, IJMAX = (imax+2)*(jmax+2);
+  int IMAX = imax + 2, IJMAX = (imax + 2) * (jmax + 2);
   char string[400];
 
-  if((file_old_ffd=fopen(para->inpu->old_ffd_file_name,"r"))==NULL) {
+  if ((file_old_ffd = fopen(para->inpu->old_ffd_file_name, "r")) == NULL) {
     sprintf(msg, "ffd_data_reader.c: Can not open file \"%s\".",
             para->inpu->old_ffd_file_name);
     ffd_log(msg, FFD_ERROR);
@@ -44,10 +44,10 @@ int read_ffd_data(PARA_DATA *para, REAL **var) {
   }
 
   FOR_ALL_CELL
-   fgets(string, 400, file_old_ffd);
-   sscanf(string,"%lf%lf%lf%lf%lf%lf", &var[VX][IX(i,j,k)], &var[VY][IX(i,j,k)],
-          &var[VZ][IX(i,j,k)], &var[TEMP][IX(i,j,k)],
-          &var[Xi1][IX(i,j,k)], &var[IP][IX(i,j,k)]);
+  fgets(string, 400, file_old_ffd);
+  sscanf(string, "%lf%lf%lf%lf%lf%lf", &var[VX][IX(i, j, k)],
+         &var[VY][IX(i, j, k)], &var[VZ][IX(i, j, k)], &var[TEMP][IX(i, j, k)],
+         &var[Xi1][IX(i, j, k)], &var[IP][IX(i, j, k)]);
   END_FOR
 
   fclose(file_old_ffd);
@@ -55,5 +55,4 @@ int read_ffd_data(PARA_DATA *para, REAL **var) {
           para->inpu->old_ffd_file_name);
   ffd_log(msg, FFD_NORMAL);
   return 0;
-} // End of read_ffd_data()
-
+}  // End of read_ffd_data()

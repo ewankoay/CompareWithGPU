@@ -25,7 +25,6 @@
 #include "ffd.h"
 #include "geometry.h"
 
-
 FILE *file_log;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -48,6 +47,16 @@ REAL check_residual(PARA_DATA *para, REAL **var, REAL *x, REAL *flag);
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
 void ffd_log(char *message, FFD_MSG_TYPE msg_type);
+
+///////////////////////////////////////////////////////////////////////////////
+/// Write the values at monitor points to file
+///
+///\param message Pointer the message
+///\param msg_type Type of message
+///
+///\return 0 if no error occurred
+///////////////////////////////////////////////////////////////////////////////
+void ffd_monitor_log(PARA_DATA *para, REAL **var, FFD_MSG_TYPE msg_type);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Check the outflow rate of the scalar psi
@@ -85,7 +94,7 @@ REAL inflow(PARA_DATA *para, REAL **var, REAL *psi, int **BINDEX);
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-REAL check_min(PARA_DATA *para, REAL *psi, int ci,int cj,int ck);
+REAL check_min(PARA_DATA *para, REAL *psi, int ci, int cj, int ck);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Check the maximum value of the scalar psi at (ci,cj,ck) and its surrounding
@@ -99,7 +108,7 @@ REAL check_min(PARA_DATA *para, REAL *psi, int ci,int cj,int ck);
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-REAL check_max( PARA_DATA *para, REAL *psi, int ci,int cj,int ck);
+REAL check_max(PARA_DATA *para, REAL *psi, int ci, int cj, int ck);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Calculate averaged value of psi
@@ -109,7 +118,6 @@ REAL check_max( PARA_DATA *para, REAL *psi, int ci,int cj,int ck);
 ///
 ///////////////////////////////////////////////////////////////////////////////
 REAL average(PARA_DATA *para, REAL *psi);
-
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Calculate volume weighted averaged value of psi in a space
@@ -145,7 +153,7 @@ int average_time(PARA_DATA *para, REAL **var);
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-int reset_time_averaged_data (PARA_DATA *para, REAL **var);
+int reset_time_averaged_data(PARA_DATA *para, REAL **var);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Add time averaged value for the time average later on
@@ -156,7 +164,7 @@ int reset_time_averaged_data (PARA_DATA *para, REAL **var);
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-int add_time_averaged_data (PARA_DATA *para, REAL **var);
+int add_time_averaged_data(PARA_DATA *para, REAL **var);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Check the energy transfer rate through the wall to the air
@@ -167,7 +175,7 @@ int add_time_averaged_data (PARA_DATA *para, REAL **var);
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-REAL qwall(PARA_DATA *para, REAL **var,int **BINDEX);
+REAL qwall(PARA_DATA *para, REAL **var, int **BINDEX);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Free memory for BINDEX
@@ -298,8 +306,10 @@ int parse_argument(int argc, char **argv, int *platform_device);
 ///////////////////////////////////////////////////////////////////////////////
 /// calculate momentum kick: 1/rho*S
 /// 1/rho*S = V_dot*(V1-V2)/V = A*V2*(V2/beta-V2)/A*h = V2*(V2/beta-V2)/h
-/// where: V1 and V2 are the velocities supposing that tiles are partially or fully open
-///        A is tha area of tile, h is the height of the space, beta is open-area-ratio
+/// where: V1 and V2 are the velocities supposing that tiles are partially or
+/// fully open
+///        A is tha area of tile, h is the height of the space, beta is
+///        open-area-ratio
 ///////////////////////////////////////////////////////////////////////////////
 REAL get_momentum_kick(REAL V2, REAL beta, REAL h);
 
@@ -307,7 +317,9 @@ REAL get_momentum_kick(REAL V2, REAL beta, REAL h);
 /// find the monitoring points in front of each rack
 /// return 0 if all points are found
 ///////////////////////////////////////////////////////////////////////////////
-int get_monitor_points(PARA_DATA *para, REAL **var,int SI, int SJ, int SK, int EI, int EJ, int EK,int rack_flow_direction, int id_rack);
+int get_monitor_points(PARA_DATA *para, REAL **var, int SI, int SJ, int SK,
+                       int EI, int EJ, int EK, int rack_flow_direction,
+                       int id_rack);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// find the indexes of the monitoring points
@@ -324,5 +336,12 @@ int get_monitor_index(PARA_DATA *para, REAL **var);
 /// return 0 if all points are found
 ///////////////////////////////////////////////////////////////////////////////
 int write_monitor_data(PARA_DATA *para, REAL **var);
+
+///////////////////////////////////////////////////////////////////////////////
+/// chop the first n characters from the string
+///
+/// return 0 if all points are found
+///////////////////////////////////////////////////////////////////////////////
+void chopN(char *str, size_t n);
 
 #endif

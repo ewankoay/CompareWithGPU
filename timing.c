@@ -38,12 +38,12 @@ void timing(PARA_DATA *para) {
   para->mytime->t += para->mytime->dt;
   para->mytime->step_current += 1;
   para->mytime->t_end = clock();
-  //printf ("the time end simulation is %lf\n", para->mytime->t_end);
+  // printf ("the time end simulation is %lf\n", para->mytime->t_end);
 
-  cputime= ((double) (clock() - para->mytime->t_start) / CLOCKS_PER_SEC);
+  cputime = ((double)(clock() - para->mytime->t_start) / CLOCKS_PER_SEC);
 
   sprintf(msg, "Physical time=%.4f s, CPU time=%.4f s, Time Ratio=%.4f",
-         para->mytime->t, cputime, para->mytime->t/cputime);
+          para->mytime->t, cputime, para->mytime->t / cputime);
   ffd_log(msg, FFD_NORMAL);
 
-} // End of timing( )
+}  // End of timing( )

@@ -21,11 +21,11 @@
 #define _FFD_H
 
 #include "data_structure.h"
-#include "timing.h"
-#include "solver.h"
-#include "utility.h"
 #include "data_writer.h"
 #include "initialization.h"
+#include "solver.h"
+#include "timing.h"
+#include "utility.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Main routine of FFD
@@ -43,7 +43,7 @@ int ffd(int cosimulation);
 ///
 ///\return No return needed
 ///////////////////////////////////////////////////////////////////////////////
-int allocate_memory (PARA_DATA *para);
+int allocate_memory(PARA_DATA *para);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Write error message to Modelica

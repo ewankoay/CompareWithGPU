@@ -41,7 +41,8 @@ int project(PARA_DATA *para, REAL **var, int **BINDEX);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Check the mass imbalance after projjection
-/// This usually indicates that the energy balance after advection could be problematic.
+/// This usually indicates that the energy balance after advection could be
+/// problematic.
 ///
 ///\param para Pointer to FFD parameters
 ///\param var Pointer to FFD simulation variables

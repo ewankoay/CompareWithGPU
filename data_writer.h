@@ -26,7 +26,6 @@
 
 #include "utility.h"
 
-
 FILE *file1;
 
 int data_debug(PARA_DATA *para, REAL **var, char *name);
@@ -104,5 +103,19 @@ int write_SCI(PARA_DATA *para, REAL **var, char *name);
 
 int write_vtk_data(PARA_DATA *para, REAL **var, char *name);
 int write_vtk_fluid(PARA_DATA *para, REAL **var, char *name);
+///////////////////////////////////////////////////////////////////////////////
+/// Write standard output data in a format for paraview in VTK in ZYX
+/// direction(Visualization Toolkit)
+/// http://www.vtk.org/wp-content/uploads/2015/04/file-formats.pdf
+///\Wei Tian
+///\ 6/1/2017, Andover, MA
+///\param para Pointer to FFD parameters
+///\param var Pointer to FFD simulation variables
+///\param name Pointer to file name
+///
+///\return 0 if no error occurred
+///////////////////////////////////////////////////////////////////////////////
+int write_vtk_fluid_kji(PARA_DATA *para, REAL **var, char *name);
+int write_stdout(PARA_DATA *para, REAL **var, int **BINDEX);
 
 #endif
