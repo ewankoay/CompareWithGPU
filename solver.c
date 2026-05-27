@@ -20,7 +20,7 @@
 
 #include "solver.h"
 
-int hasTile = 0;
+
 ///////////////////////////////////////////////////////////////////////////////
 /// FFD solver
 ///
@@ -35,10 +35,6 @@ int FFD_solver(PARA_DATA *para, REAL **var, int **BINDEX) {
   REAL t_steady = para->mytime->t_steady;
   double t_cosim;
   int flag, next, bar=0;
-
-		// check the number of tiles in input file
-		//if (check_num_tiles(&para, var, BINDEX)>0) hasTile = 1;
-		hasTile = 0;
 
   /***************************************************************************
   | Solver Loop
@@ -253,19 +249,17 @@ int vel_step(PARA_DATA *para, REAL **var,int **BINDEX) {
   int flag = 0;
 
   // Model tile
-		if (hasTile) {
-			if (para->solv->tile_flow_correct == PRESSURE_BASE)
-				flag = assign_tile_velocity(para, var, BINDEX);
-			else if (para->solv->tile_flow_correct == NS_SOURCE)
-				flag = tile_source(para, var, BINDEX);
-			else
-				flag = 0;
+  if (para->solv->tile_flow_correct == PRESSURE_BASE)
+    flag = assign_tile_velocity(para, var, BINDEX);
+  else if (para->solv->tile_flow_correct == NS_SOURCE)
+    flag = tile_source(para, var, BINDEX);
+  else
+    flag = 0;
 
-			if (flag != 0) {
-				ffd_log("vel_step(): Could not determine the velocity for the tiles in pure tile modeling.", FFD_ERROR);
-				return flag;
-			}
-		}
+  if (flag != 0) {
+    ffd_log("vel_step(): Could not determine the velocity for the tiles in pure tile modeling.", FFD_ERROR);
+    return flag;
+  }
 
   // Call rack black model if there is any rack
   if (para->bc->nb_rack !=0) {
@@ -360,7 +354,7 @@ int vel_step(PARA_DATA *para, REAL **var,int **BINDEX) {
   }
 
     // forced mass conservation function is NOT on after projection is Pressure-based correction is applied to tiles.
-  if(para->bc->nb_outlet!=0 && para->solv->mass_conservation_on ==1) flag = mass_conservation(para, var,BINDEX);
+  //if(para->bc->nb_outlet!=0 && para->solv->mass_conservation_on ==1) flag = mass_conservation(para, var,BINDEX);
   if(flag!=0) {
     ffd_log("vel_step(): Could not conduct mass conservation correction.",
             FFD_ERROR);
@@ -843,9 +837,9 @@ int assign_tile_velocity(PARA_DATA *para, REAL **var, int **BINDEX) {
     //getchar();
   }// end of if (para->mytime->step_current == 0)
   // Output the tile flow rates information
-  //if (check_tile_flowrate(para, var, BINDEX) != 0) {
-  //  ffd_log("assign_tile_velocity: can not output the flow rates at tiles", FFD_ERROR);
-  //}
+  if (check_tile_flowrate(para, var, BINDEX) != 0) {
+    ffd_log("assign_tile_velocity: can not output the flow rates at tiles", FFD_ERROR);
+  }
   return 0;
 }
 

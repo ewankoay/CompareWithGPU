@@ -10,7 +10,7 @@
 #######################################################
 SHELL = /bin/sh
 ARCH = $(shell getconf LONG_BIT)
-
+CL_DIR=$(CURC_CUDA_INC)
 # Directory where executable will be copied to
 BINDIR = ../../Library/linux$(ARCH)
 
@@ -25,27 +25,23 @@ CC_FLAGS_64 = -Wall -lm -m64 -std=c89 -pedantic -msse2 -mfpmath=sse
 SRCS = advection.c boundary.c chen_zero_equ_model.c \
        data_writer.c diffusion.c ffd.c ffd_data_reader.c geometry.c initialization.c \
        interpolation.c parameter_reader.c projection.c sci_reader.c solver.c solver_gs.c \
-       timing.c utility.c main.c
+       timing.c utility.c opencl_main.c
 
 OBJS = advection.o boundary.o chen_zero_equ_model.o \
        data_writer.o diffusion.o ffd.o ffd_data_reader.o geometry.o initialization.o \
        interpolation.o parameter_reader.o projection.o sci_reader.o solver.o solver_gs.o \
-       timing.o utility.o main.o
+       timing.o utility.o opencl_main.o
 
-LIB = libffd.so
-LIBS = -lpthread -lc -lm
+LIBS = -lpthread -lc -lm -lOpenCL
 
 # Note that -fPIC is recommended on Linux according to the Modelica specification
 
 all: clean
-	#$(CC) -c $(SRCS)
-	#$(CC) $(OBJS) $(LIBS) -o FFD
-	$(CC) -o ffd_cpu $(SRCS) $(LIBS)
+	$(CC) -o ffd_gpu $(SRCS) $(LIBS) -I$(CL_DIR)
 	rm -f $(OBJS)
-	@echo "==== library generated in $(BINDIR)"
 
 clean:
-	rm -f $(OBJS) $(BINDIR)$(LIB)
+	rm -f $(OBJS) 
 
 # To enable RootMakefile, add fellow empty targets
 doc:

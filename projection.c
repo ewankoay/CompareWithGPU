@@ -68,7 +68,7 @@ int project(PARA_DATA *para, REAL **var, int **BINDEX) {
     as[IX(i,j,k)] = Dx*Dz/dys;
     af[IX(i,j,k)] = Dx*Dy/dzf;
     ab[IX(i,j,k)] = Dx*Dy/dzb;
-    b[IX(i,j,k)] = /*rho**/Dx*Dy*Dz/dt*((u[IX(i-1,j,k)]-u[IX(i,j,k)])/Dx
+    b[IX(i,j,k)] = rho*Dx*Dy*Dz/dt*((u[IX(i-1,j,k)]-u[IX(i,j,k)])/Dx
                  + (v[IX(i,j-1,k)]-v[IX(i,j,k)])/Dy
                  + (w[IX(i,j,k-1)]-w[IX(i,j,k)])/Dz);
   END_FOR
@@ -106,20 +106,17 @@ int project(PARA_DATA *para, REAL **var, int **BINDEX) {
   ****************************************************************************/
   FOR_U_CELL
     if (flagu[IX(i,j,k)]>=0) continue;
-    //u[IX(i,j,k)] -= dt/rho*(p[IX(i+1,j,k)]-p[IX(i,j,k)]) / (x[IX(i+1,j,k)]-x[IX(i,j,k)]);
-	u[IX(i, j, k)] -= dt * (p[IX(i + 1, j, k)] - p[IX(i, j, k)]) / (x[IX(i + 1, j, k)] - x[IX(i, j, k)]);
+    u[IX(i,j,k)] -= dt/rho*(p[IX(i+1,j,k)]-p[IX(i,j,k)]) / (x[IX(i+1,j,k)]-x[IX(i,j,k)]);
   END_FOR
 
   FOR_V_CELL
     if (flagv[IX(i,j,k)]>=0) continue;
-    //v[IX(i,j,k)] -= dt/rho*(p[IX(i,j+1,k)]-p[IX(i,j,k)]) / (y[IX(i,j+1,k)]-y[IX(i,j,k)]);
-	v[IX(i, j, k)] -= dt * (p[IX(i, j + 1, k)] - p[IX(i, j, k)]) / (y[IX(i, j + 1, k)] - y[IX(i, j, k)]);
+    v[IX(i,j,k)] -= dt/rho*(p[IX(i,j+1,k)]-p[IX(i,j,k)]) / (y[IX(i,j+1,k)]-y[IX(i,j,k)]);
   END_FOR
 
   FOR_W_CELL
     if (flagw[IX(i,j,k)]>=0) continue;
-    //w[IX(i,j,k)] -= dt/rho*(p[IX(i,j,k+1)]-p[IX(i,j,k)]) / (z[IX(i,j,k+1)]-z[IX(i,j,k)]);
-	w[IX(i, j, k)] -= dt  * (p[IX(i, j, k + 1)] - p[IX(i, j, k)]) / (z[IX(i, j, k + 1)] - z[IX(i, j, k)]);
+    w[IX(i,j,k)] -= dt/rho*(p[IX(i,j,k+1)]-p[IX(i,j,k)]) / (z[IX(i,j,k+1)]-z[IX(i,j,k)]);
   END_FOR
 
   /****************************************************************************

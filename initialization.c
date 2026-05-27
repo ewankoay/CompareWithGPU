@@ -136,14 +136,14 @@ void set_default_parameter(PARA_DATA *para) {
     para->geom->tile_putY = 0; // by default the tile is NOT put in Y direction
     para->geom->tile_putZ = 1; // by default the tile is put in Z direction
     para->bc->nb_rack = 0; // assume no racks
-	para->bc->outlet_bc = ZERO_GRADIENT; //PRESCRIBED_VALUE; // assume Neumann BC for outlet
-    para->outp->result_file = VTK; // set the result file in tecplot format
+    para->bc->outlet_bc = ZERO_GRADIENT; // assume Neumann BC for outlet
+    para->outp->result_file = PLT; // set the result file in tecplot format
 
     /****************************************************************************
     | Determine if using a pressure correction or forced mass conservation
     ****************************************************************************/
-    //para->solv->tile_flow_correct = PRESSURE_BASE;
-    //if (para->solv->tile_flow_correct == PRESSURE_BASE) para->solv->mass_conservation_on = 0;
+    para->solv->tile_flow_correct = PRESSURE_BASE;
+    if (para->solv->tile_flow_correct == PRESSURE_BASE) para->solv->mass_conservation_on = 0;
 } // End of set_default_parameter
 
 ///////////////////////////////////////////////////////////////////////////////
