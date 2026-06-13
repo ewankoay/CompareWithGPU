@@ -120,6 +120,9 @@ void set_default_parameter(PARA_DATA *para) {
   para->solv->solver = GS;               // use gauss seidels solver as default
   para->solv->check_conservation = 0;  // check the scalar conervation stepwise
   para->solv->mass_conservation_on = 0;  // always turn on mass balance
+  para->solv->res_adv = 1e-6;
+  para->solv->res_diff = 1e-6;
+  para->solv->res_pro = 1e-6;
 
   // Default values for Input
   para->inpu->read_old_ffd_file =
@@ -570,6 +573,9 @@ int init_para_simp(PARA_DATA *para, PARA_DATA_SIMP *para_simp) {
   para_simp->solv.SOR_U = para->solv->SOR_U;
   para_simp->solv.SOR_V = para->solv->SOR_V;
   para_simp->solv.SOR_W = para->solv->SOR_W;
+  para_simp->solv.res_adv = para->solv->res_adv;
+  para_simp->solv.res_diff = para->solv->res_diff;
+  para_simp->solv.res_pro = para->solv->res_pro;
 
   // init data
   para_simp->init.T = para->init->T;

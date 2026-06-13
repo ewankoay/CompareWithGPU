@@ -26,8 +26,8 @@ BINDIR_O_DETECT = ./Build_OPENCL_Detect
 ## Compilation flags
 ## -w: suppress warnings
 CC = gcc
-CC_FLAGS_32 = -Wall -lm -m32 -std=c99 -pedantic -msse2 -mfpmath=sse -w
-CC_FLAGS_64 = -Wall -lm -m64 -std=c99 -pedantic -msse2 -mfpmath=sse -w
+CC_FLAGS_32 = -Wall -lm -m32 -std=c99 -pedantic -msse2 -mfpmath=sse -w -fcommon
+CC_FLAGS_64 = -Wall -lm -m64 -std=c99 -pedantic -msse2 -mfpmath=sse -w -fcommon
 
 SRCS_C = advection.c boundary.c chen_zero_equ_model.c \
        data_writer.c diffusion.c ffd.c ffd_data_reader.c geometry.c initialization.c \

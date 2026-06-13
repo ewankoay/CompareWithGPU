@@ -149,7 +149,7 @@ int project(PARA_DATA *para, REAL **var, int **BINDEX) {
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-int check_mass_imbalance(PARA_DATA *para, REAL **var) {
+REAL check_mass_imbalance(PARA_DATA *para, REAL **var) {
   int i, j, k;
   int imax = para->geom->imax, jmax = para->geom->jmax;
   int kmax = para->geom->kmax;

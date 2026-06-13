@@ -535,6 +535,13 @@ int CheckImbalance(PARA_DATA *para, REAL **var, int var_type, int **BINDEX) {
             para->prob->Energy_Imb_Adv, fabs(in - out + wall) / wall);
     fclose(FILE_IM);
   }
+
+  if (para->solv->check_residual == 1) {
+    sprintf(msg, "Deficit: %e, Imbalance (Ein+Ewall-Eout)/Ewall: %e",
+            (in - out + wall), fabs(in - out + wall) / wall);
+    ffd_log(msg, FFD_NORMAL);
+  }
+
   return 0;
 }
 

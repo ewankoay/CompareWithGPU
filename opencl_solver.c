@@ -379,7 +379,7 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
   int nb_var = C2BC + 1;
   /*define the index*/
   int JACO_IT = 0;  // for control for iteration
-  int IT_MAX = 30;  // 20 iteration for jacobian solver
+  int IT_MAX = 30;  // 30 iteration for jacobian solver
   int NEXT = 1;     // for control of simulation
   int VX_IND[1] = {VX};
   int VY_IND[1] = {VY};
@@ -404,6 +404,7 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
   int *rack_dir = NULL;
 
   cl_int status;
+  REAL residual = 0.0;
 
   /***********************OPENCL MEMORY ALLOCATIONS FOR
    * KENERLS***********************************/
@@ -417,6 +418,8 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
    * ALLOCATIONS******************************************/
   if (ffd_prep(0) != 0) {
     ffd_log("main(): Error in launching the FFD simulation", FFD_ERROR);
+    printf("Error: Failed to initialize FFD simulation. Please check log.ffd (likely a missing input.cfd file).\n");
+    return 1;
   }
   // get data for rack
   if (para.bc->nb_rack != 0) {
@@ -865,7 +868,8 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
 
       // SOLVE THE LINEAR EQUATIONS U Solver: [kernel 10]
       JACO_IT = 0;  // initialize index before calculation
-      while (JACO_IT < IT_MAX) {
+      residual = para.solv->res_diff + 1.0;
+      while (JACO_IT < IT_MAX && residual > para.solv->res_diff) {
         // set the argument for the kernel
         status =
             clSetKernelArg(kernel[10], 0, sizeof(cl_mem), (void *)&para_mobj);
@@ -889,6 +893,16 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
                                 (void *)&DIFF_ind_mobj);
         clEnqueueNDRangeKernel(commandQueue, kernel[23], 3, NULL,
                                global_work_size, NULL, 0, NULL, NULL);
+        if (para.solv->check_residual == 1) {
+          clEnqueueNDRangeKernel(commandQueue, kernel[15], 1, NULL,
+                                 global_work_size_bc, NULL, 0, NULL, NULL);
+          status = clEnqueueReadBuffer(commandQueue, var_mobj, CL_TRUE, 0,
+                                       nb_var * size * sizeof(REAL), var_flat, 0, NULL, NULL);
+          status = clFlush(commandQueue);
+          status = clFinish(commandQueue);
+          unflat_var(&para, var, var_flat);
+          residual = check_residual(&para, var, var[VX], var[FLAGU]);
+        }
         // iteration marches on
         JACO_IT++;
       }  // end of while loop for jacobian loop
@@ -905,6 +919,18 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
       // Run kernel
       clEnqueueNDRangeKernel(commandQueue, kernel[15], 1, NULL,
                              global_work_size_bc, NULL, 0, NULL, NULL);
+
+      if (para.solv->check_residual == 1) {
+        status = clEnqueueReadBuffer(commandQueue, var_mobj, CL_TRUE, 0,
+                                     nb_var * size * sizeof(REAL), var_flat, 0,
+                                     NULL, NULL);
+        status = clFlush(commandQueue);
+        status = clFinish(commandQueue);
+        unflat_var(&para, var, var_flat);
+        residual = check_residual(&para, var, var[VX], var[FLAGU]);
+        sprintf(msg, "Residual in diffusion U: %e", residual);
+        ffd_log(msg, FFD_NORMAL);
+      }
 
       /************************SOLVE
       ADVECVTION-DIFFUSION-V******************************* / ADVECTION AND
@@ -959,7 +985,8 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
 
       // SOLVE THE LINEAR EQUATIONS V Solver:[kernel 10]
       JACO_IT = 0;  // initialize index before calculation
-      while (JACO_IT < IT_MAX) {
+      residual = para.solv->res_diff + 1.0;
+      while (JACO_IT < IT_MAX && residual > para.solv->res_diff) {
         // set the argument for the kernel
         status =
             clSetKernelArg(kernel[10], 0, sizeof(cl_mem), (void *)&para_mobj);
@@ -983,6 +1010,16 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
                                 (void *)&DIFF_ind_mobj);
         clEnqueueNDRangeKernel(commandQueue, kernel[23], 3, NULL,
                                global_work_size, NULL, 0, NULL, NULL);
+        if (para.solv->check_residual == 1) {
+          clEnqueueNDRangeKernel(commandQueue, kernel[16], 1, NULL,
+                                 global_work_size_bc, NULL, 0, NULL, NULL);
+          status = clEnqueueReadBuffer(commandQueue, var_mobj, CL_TRUE, 0,
+                                       nb_var * size * sizeof(REAL), var_flat, 0, NULL, NULL);
+          status = clFlush(commandQueue);
+          status = clFinish(commandQueue);
+          unflat_var(&para, var, var_flat);
+          residual = check_residual(&para, var, var[VY], var[FLAGV]);
+        }
         // iteration marches on
         JACO_IT++;
       }  // end of while loop for jacobian loop
@@ -999,6 +1036,18 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
       // Run kernel
       clEnqueueNDRangeKernel(commandQueue, kernel[16], 1, NULL,
                              global_work_size_bc, NULL, 0, NULL, NULL);
+
+      if (para.solv->check_residual == 1) {
+        status = clEnqueueReadBuffer(commandQueue, var_mobj, CL_TRUE, 0,
+                                     nb_var * size * sizeof(REAL), var_flat, 0,
+                                     NULL, NULL);
+        status = clFlush(commandQueue);
+        status = clFinish(commandQueue);
+        unflat_var(&para, var, var_flat);
+        residual = check_residual(&para, var, var[VY], var[FLAGV]);
+        sprintf(msg, "Residual in diffusion V: %e", residual);
+        ffd_log(msg, FFD_NORMAL);
+      }
 
       /************************SOLVE
       ADVECVTION-DIFFUSION-W******************************* / ADVECTION AND
@@ -1053,7 +1102,8 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
 
       // SOLVE THE LINEAR EQUATIONS W Solver: [kernel 10]
       JACO_IT = 0;  // initialize index before calculation
-      while (JACO_IT < IT_MAX) {
+      residual = para.solv->res_diff + 1.0;
+      while (JACO_IT < IT_MAX && residual > para.solv->res_diff) {
         // set the argument for the kernel
         status =
             clSetKernelArg(kernel[10], 0, sizeof(cl_mem), (void *)&para_mobj);
@@ -1078,6 +1128,16 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
                                 (void *)&DIFF_ind_mobj);
         clEnqueueNDRangeKernel(commandQueue, kernel[23], 3, NULL,
                                global_work_size, NULL, 0, NULL, NULL);
+        if (para.solv->check_residual == 1) {
+          clEnqueueNDRangeKernel(commandQueue, kernel[17], 1, NULL,
+                                 global_work_size_bc, NULL, 0, NULL, NULL);
+          status = clEnqueueReadBuffer(commandQueue, var_mobj, CL_TRUE, 0,
+                                       nb_var * size * sizeof(REAL), var_flat, 0, NULL, NULL);
+          status = clFlush(commandQueue);
+          status = clFinish(commandQueue);
+          unflat_var(&para, var, var_flat);
+          residual = check_residual(&para, var, var[VZ], var[FLAGW]);
+        }
         // iteration marches on
         JACO_IT++;
       }  // end of while loop for jacobian loop
@@ -1094,6 +1154,18 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
       // Run kernel
       clEnqueueNDRangeKernel(commandQueue, kernel[17], 1, NULL,
                              global_work_size_bc, NULL, 0, NULL, NULL);
+
+      if (para.solv->check_residual == 1) {
+        status = clEnqueueReadBuffer(commandQueue, var_mobj, CL_TRUE, 0,
+                                     nb_var * size * sizeof(REAL), var_flat, 0,
+                                     NULL, NULL);
+        status = clFlush(commandQueue);
+        status = clFinish(commandQueue);
+        unflat_var(&para, var, var_flat);
+        residual = check_residual(&para, var, var[VZ], var[FLAGW]);
+        sprintf(msg, "Residual in diffusion W: %e", residual);
+        ffd_log(msg, FFD_NORMAL);
+      }
 
       /************************SOLVE
       PROJECTION****************************************** / PROJECTION IS
@@ -1136,7 +1208,8 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
                                global_work_size, NULL, 0, NULL, NULL);
         /*STEP 7.3 :Projection Solver [kernel 11]*/
         JACO_IT = 0;  // initialize index before calculation
-        while (JACO_IT < IT_MAX) {
+        residual = para.solv->res_pro + 1.0;
+        while (JACO_IT < IT_MAX && residual > para.solv->res_pro) {
           // set the argument for the kernel
           status =
               clSetKernelArg(kernel[11], 0, sizeof(cl_mem), (void *)&para_mobj);
@@ -1152,6 +1225,16 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
               clSetKernelArg(kernel[24], 1, sizeof(cl_mem), (void *)&var_mobj);
           clEnqueueNDRangeKernel(commandQueue, kernel[24], 3, NULL,
                                  global_work_size, NULL, 0, NULL, NULL);
+          if (para.solv->check_residual == 1) {
+            clEnqueueNDRangeKernel(commandQueue, kernel[14], 1, NULL,
+                                   global_work_size_bc, NULL, 0, NULL, NULL);
+            status = clEnqueueReadBuffer(commandQueue, var_mobj, CL_TRUE, 0,
+                                         nb_var * size * sizeof(REAL), var_flat, 0, NULL, NULL);
+            status = clFlush(commandQueue);
+            status = clFinish(commandQueue);
+            unflat_var(&para, var, var_flat);
+            residual = check_residual(&para, var, var[IP], var[FLAGP]);
+          }
           // iteration marches on
           JACO_IT++;
         }  // end of while loop for jacobian loop
@@ -1166,6 +1249,19 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
         // Run kernel
         clEnqueueNDRangeKernel(commandQueue, kernel[14], 1, NULL,
                                global_work_size_bc, NULL, 0, NULL, NULL);
+
+        if (para.solv->check_residual == 1) {
+          status = clEnqueueReadBuffer(commandQueue, var_mobj, CL_TRUE, 0,
+                                       nb_var * size * sizeof(REAL), var_flat, 0,
+                                       NULL, NULL);
+          status = clFlush(commandQueue);
+          status = clFinish(commandQueue);
+          unflat_var(&para, var, var_flat);
+          residual = check_residual(&para, var, var[IP], var[FLAGP]);
+          sprintf(msg, "Residual in projection: %e", residual);
+          ffd_log(msg, FFD_NORMAL);
+        }
+
         /*STEP 7.5 :Velocity after Projection [kernel 9]*/
         // Set arguments
         status =
@@ -1177,6 +1273,18 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
         // Run kernel
         clEnqueueNDRangeKernel(commandQueue, kernel[9], 3, NULL,
                                global_work_size, NULL, 0, NULL, NULL);
+
+        if (para.solv->check_residual == 1) {
+          status = clEnqueueReadBuffer(commandQueue, var_mobj, CL_TRUE, 0,
+                                       nb_var * size * sizeof(REAL), var_flat, 0,
+                                       NULL, NULL);
+          status = clFlush(commandQueue);
+          status = clFinish(commandQueue);
+          unflat_var(&para, var, var_flat);
+          residual = check_mass_imbalance(&para, var);
+          sprintf(msg, "mass imbalance after projection: %e", residual);
+          ffd_log(msg, FFD_NORMAL);
+        }
       }
 
       // GO TO NEXT INNER ITERATION
@@ -1266,7 +1374,8 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
 
       // SOLVE THE LINEAR EQUATIONS W Solver: [kernel 10]
       JACO_IT = 0;  // initialize index before calculation
-      while (JACO_IT < IT_MAX) {
+      residual = para.solv->res_diff + 1.0;
+      while (JACO_IT < IT_MAX && residual > para.solv->res_diff) {
         // set the argument for the kernel
         status =
             clSetKernelArg(kernel[10], 0, sizeof(cl_mem), (void *)&para_mobj);
@@ -1291,6 +1400,16 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
                                 (void *)&DIFF_ind_mobj);
         clEnqueueNDRangeKernel(commandQueue, kernel[23], 3, NULL,
                                global_work_size, NULL, 0, NULL, NULL);
+        if (para.solv->check_residual == 1) {
+          clEnqueueNDRangeKernel(commandQueue, kernel[13], 1, NULL,
+                                 global_work_size_bc, NULL, 0, NULL, NULL);
+          status = clEnqueueReadBuffer(commandQueue, var_mobj, CL_TRUE, 0,
+                                       nb_var * size * sizeof(REAL), var_flat, 0, NULL, NULL);
+          status = clFlush(commandQueue);
+          status = clFinish(commandQueue);
+          unflat_var(&para, var, var_flat);
+          residual = check_residual(&para, var, var[TEMP], var[FLAGP]);
+        }
         // iteration marches on
         JACO_IT++;
       }  // end of while loop for jacobian loop
@@ -1307,6 +1426,18 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
       // Run kernel
       clEnqueueNDRangeKernel(commandQueue, kernel[13], 1, NULL,
                              global_work_size_bc, NULL, 0, NULL, NULL);
+
+      if (para.solv->check_residual == 1) {
+        status = clEnqueueReadBuffer(commandQueue, var_mobj, CL_TRUE, 0,
+                                     nb_var * size * sizeof(REAL), var_flat, 0,
+                                     NULL, NULL);
+        status = clFlush(commandQueue);
+        status = clFinish(commandQueue);
+        unflat_var(&para, var, var_flat);
+        residual = check_residual(&para, var, var[TEMP], var[FLAGP]);
+        sprintf(msg, "Residual in diffusion T: %e", residual);
+        ffd_log(msg, FFD_NORMAL);
+      }
     }
     /************************TIME MARCH
     ONE****************************************** / MARCH ON SIMULATION TIME
@@ -1315,6 +1446,16 @@ int ffd_opencl_solve(cl_context context, cl_device_id device,
     ***********************************************************************************/
     // Time Marches On
     timing(&para);
+
+    // Log the imbalance of energy from the GPU state
+    if (para.solv->check_conservation) {
+      status = clEnqueueReadBuffer(commandQueue, var_mobj, CL_TRUE, 0,
+                                   nb_var * size * sizeof(REAL), var_flat, 0, NULL, NULL);
+      status = clFinish(commandQueue);
+      unflat_var(&para, var, var_flat);
+      CheckImbalance(&para, var, TEMP, BINDEX);
+    }
+
     // STEP 11.2 :add averaged data
     // if (para.outp->cal_mean == 1 && para.mytime->t>para.mytime->t_steady) {
     if (para.mytime->t > para.mytime->t_steady) {

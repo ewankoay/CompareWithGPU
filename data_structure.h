@@ -103,13 +103,15 @@
 #define FAILURE 1
 #define MAX_SOURCE_SIZE (0x100000)
 
-#ifndef max
+#ifdef max
+#undef max
+#endif
 #define max(a, b) (((a) > (b)) ? (a) : (b))
-#endif
 
-#ifndef sign
-#define sign(x) ((x > 0) - (x < 0))
+#ifdef sign
+#undef sign
 #endif
+#define sign(x) ((x > 0) - (x < 0))
 
 #define PI 3.1415926
 
@@ -519,6 +521,9 @@ typedef struct {
   REAL SOR_U;
   REAL SOR_V;
   REAL SOR_W;
+  REAL res_adv;
+  REAL res_diff;
+  REAL res_pro;
 } SOLV_DATA;
 
 typedef struct {

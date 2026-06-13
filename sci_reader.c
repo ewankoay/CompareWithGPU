@@ -320,7 +320,7 @@ int read_sci_input(PARA_DATA *para, REAL **var, int **BINDEX) {
   END_FOR
 
   // Get the wall property
-  // fgets(string, 400, file_params);
+  fgets(string, 400, file_params);
   // sscanf(string,"%d%d%d%d%d%d", &IWWALL, &IEWALL, &ISWALL,
   //&INWALL, &IBWALL, &ITWALL);
 
@@ -1619,19 +1619,19 @@ int read_sci_input(PARA_DATA *para, REAL **var, int **BINDEX) {
   *****************************************************************************/
   // Discard the unused data
   // fgets(string, 400, file_params); //maximum iteration
-  // fgets(string, 400, file_params); //maximum iteration
-  // fgets(string, 400, file_params); //convergence rate
-  // fgets(string, 400, file_params); //Turbulence model
-  // fgets(string, 400, file_params); //initial value
-  // fgets(string, 400, file_params); //minimum value
-  // fgets(string, 400, file_params); //maximum value
-  // fgets(string, 400, file_params); //fts value
-  // fgets(string, 400, file_params); //under relaxation
-  // fgets(string, 400, file_params); //reference point
-  // fgets(string, 400, file_params); //monitoring point
+  fgets(string, 400, file_params); //maximum iteration
+  fgets(string, 400, file_params); //convergence rate
+  fgets(string, 400, file_params); //Turbulence model
+  fgets(string, 400, file_params); //initial value
+  fgets(string, 400, file_params); //minimum value
+  fgets(string, 400, file_params); //maximum value
+  fgets(string, 400, file_params); //fts value
+  fgets(string, 400, file_params); //under relaxation
+  fgets(string, 400, file_params); //reference point
+  fgets(string, 400, file_params); //monitoring point
 
   // Discard setting for restarting the old FFD simulation
-  // fgets(string, 400, file_params);
+  fgets(string, 400, file_params);
   /*
   sscanf(string,"%d", &para->inpu->read_old_ffd_file);
   sprintf(msg, "read_sci_input(): para->inpu->read_old_ffd_file=%d",
@@ -1639,12 +1639,12 @@ int read_sci_input(PARA_DATA *para, REAL **var, int **BINDEX) {
   ffd_log(msg, FFD_NORMAL);
   */
   // Discard the unused data
-  // fgets(string, 400, file_params); //print frequency
-  // fgets(string, 400, file_params); //Pressure variable Y/N
-  // fgets(string, 400, file_params); //Steady state, buoyancy.
+  fgets(string, 400, file_params); //print frequency
+  fgets(string, 400, file_params); //Pressure variable Y/N
+  fgets(string, 400, file_params); //Steady state, buoyancy.
 
   // Discard physical properties
-  // fgets(string, 400, file_params);
+  fgets(string, 400, file_params);
   /*
   sscanf(string,"%f %f %f %f %f %f %f %f %f", &para->prob->rho,
          &para->prob->nu, &para->prob->cond,
@@ -1693,7 +1693,7 @@ int read_sci_input(PARA_DATA *para, REAL **var, int **BINDEX) {
           para->mytime->step_total);
   ffd_log(msg, FFD_NORMAL);
 
-  // fgets(string, 400, file_params); //prandtl
+  fgets(string, 400, file_params); //prandtl
 
   /*****************************************************************************
   | Conclude the reading process

@@ -544,7 +544,8 @@ REAL h_coef(__global PARA_DATA_SIMP *para, __global REAL *var, int *ip, int *jp,
   if (para->prob.tur_model == LAM) {
     // h = lamada/D
     //h = rhoCp * para->prob.alpha / D;
-	h = coef_h * rhoCp;
+	// h = coef_h * rhoCp; // Original
+    h = rhoCp * nu / D; // Modified
   }
   else if (para->prob.tur_model == CONSTANT) {
     // multiply a 100

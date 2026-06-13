@@ -50,6 +50,6 @@ int project(PARA_DATA *para, REAL **var, int **BINDEX);
 ///
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
-int check_mass_imbalance(PARA_DATA *para, REAL **var);
+REAL check_mass_imbalance(PARA_DATA *para, REAL **var);
 
 #endif

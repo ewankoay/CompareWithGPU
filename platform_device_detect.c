@@ -13,7 +13,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #define CL_USE_DEPRECATED_OPENCL_2_0_APIS
-#ifdef __APPLE__ || __linux__
+#ifdef __APPLE__
   #include <OpenCL/opencl.h>
 #else
   #include <CL/cl.h>

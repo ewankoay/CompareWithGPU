@@ -523,6 +523,36 @@ int assign_parameter(PARA_DATA *para, char *string) {
     sprintf(msg, "assign_parameter(): %s=%d", tmp, para->solv->check_residual);
     ffd_log(msg, FFD_NORMAL);
   }
+  else if (!strcmp(tmp, "solv.res_adv")) {
+    if (ifDouble) {
+      sscanf(string, "%s%lf", tmp, &para->solv->res_adv);
+    }
+    else {
+      sscanf(string, "%s%f", tmp, &para->solv->res_adv);
+    }
+    sprintf(msg, "assign_parameter(): %s=%f", tmp, para->solv->res_adv);
+    ffd_log(msg, FFD_NORMAL);
+  }
+  else if (!strcmp(tmp, "solv.res_diff")) {
+    if (ifDouble) {
+      sscanf(string, "%s%lf", tmp, &para->solv->res_diff);
+    }
+    else {
+      sscanf(string, "%s%f", tmp, &para->solv->res_diff);
+    }
+    sprintf(msg, "assign_parameter(): %s=%f", tmp, para->solv->res_diff);
+    ffd_log(msg, FFD_NORMAL);
+  }
+  else if (!strcmp(tmp, "solv.res_pro")) {
+    if (ifDouble) {
+      sscanf(string, "%s%lf", tmp, &para->solv->res_pro);
+    }
+    else {
+      sscanf(string, "%s%f", tmp, &para->solv->res_pro);
+    }
+    sprintf(msg, "assign_parameter(): %s=%f", tmp, para->solv->res_pro);
+    ffd_log(msg, FFD_NORMAL);
+  }
   else if (!strcmp(tmp, "solv.check_conservation")) {
     sscanf(string, "%s%d", tmp, &para->solv->check_conservation);
     sprintf(msg, "assign_parameter(): %s=%d", tmp,
