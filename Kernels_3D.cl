@@ -1803,10 +1803,15 @@ __kernel void set_bnd_T(__global PARA_DATA_SIMP *para, __global REAL *var,
     psi = &var[TEMP * size];
   }
 
+// Revised area finding sequence
+/*
   axy = area_xy(para, var, &i, &j, &k);
   ayz = area_yz(para, var, &i, &j, &k);
   azx = area_zx(para, var, &i, &j, &k);
-
+*/
+  axy = var[AXY * size + IX(i, j, k)];
+  ayz = var[AYZ * size + IX(i, j, k)];
+  azx = var[AZX * size + IX(i, j, k)];
   /*-------------------------------------------------------------------------
   | Inlet boundary
   | 0: Inlet, -1: Fluid,  1: Solid Wall or Block, 2: Outlet
@@ -3002,9 +3007,15 @@ __kernel void mass_conservation(__global PARA_DATA_SIMP *para,
     j = BINDEX[1 * size + it];
     k = BINDEX[2 * size + it];
 
+  // Revised area finding sequence
+  /*
     axy = area_xy(para, var, &i, &j, &k);
     ayz = area_yz(para, var, &i, &j, &k);
     azx = area_zx(para, var, &i, &j, &k);
+  */
+    axy = var[AXY * size + IX(i, j, k)];
+    ayz = var[AYZ * size + IX(i, j, k)];
+    azx = var[AZX * size + IX(i, j, k)];
     /*-------------------------------------------------------------------------
     | Compute the total inflow
     -------------------------------------------------------------------------*/
@@ -3272,10 +3283,15 @@ __kernel void rack_model_black_box(__global PARA_DATA_SIMP *para,
   id = BINDEX[4 * size + it];
   obj_type = BINDEX[5 * size + it];
 
-  // calculate the area
+  // calculate the area. Revised area finding sequence
+  /*
   axy = area_xy(para, var, &i, &j, &k);
   ayz = area_yz(para, var, &i, &j, &k);
   azx = area_zx(para, var, &i, &j, &k);
+  */
+  axy = var[AXY * size + IX(i, j, k)];
+  ayz = var[AYZ * size + IX(i, j, k)];
+  azx = var[AZX * size + IX(i, j, k)];
   // printf("map[%d] is %d\n", id, map_matrix[id * nb_rack + 0]);
   // printf("it[%d],id[%d]", it, id);
   // printf("map[%d] is %d\n", 5, map_matrix[0]);
@@ -3348,12 +3364,14 @@ __kernel void rack_model_black_box(__global PARA_DATA_SIMP *para,
         // This is to eliminate the divide by zero scenario
         if (k == 0) {
           index_tmp = k + 1;
-          ayz = area_yz(para, var, &i, &j, &index_tmp);
+          //ayz = area_yz(para, var, &i, &j, &index_tmp);
+          ayz = var[AYZ * size + IX(i, j, index_tmp)];
         }
 
         if (j == 0) {
           index_tmp = j + 1;
-          ayz = area_yz(para, var, &i, &index_tmp, &k);
+          //ayz = area_yz(para, var, &i, &index_tmp, &k);
+          ayz = var[AYZ * size + IX(i, index_tmp, k)];
         }
 
         iin = i - sign(rack_dir[id]) * (map_matrix[id * 3 + 0] + 1);
@@ -3387,11 +3405,13 @@ __kernel void rack_model_black_box(__global PARA_DATA_SIMP *para,
         // This is to eliminate the divide by zero scenario
         if (k == 0) {
           index_tmp = k + 1;
-          azx = area_zx(para, var, &i, &j, &index_tmp);
+          //azx = area_zx(para, var, &i, &j, &index_tmp);
+          azx = var[AZX * size + IX(i, j, index_tmp)];
         }
         if (i == 0) {
           index_tmp = i + 1;
-          azx = area_zx(para, var, &index_tmp, &j, &k);
+          //azx = area_zx(para, var, &index_tmp, &j, &k);
+           azx = var[AZX * size + IX(index_tmp, j, k)];
         }
         // heat dissipation by area
         Q_dot = rack_heat[id] * azx / rack_area[id];
@@ -3415,11 +3435,13 @@ __kernel void rack_model_black_box(__global PARA_DATA_SIMP *para,
         // This is to eliminate the divide by zero scenario
         if (j == 0) {
           index_tmp = j + 1;
-          axy = area_xy(para, var, &i, &index_tmp, &k);
+          //axy = area_xy(para, var, &i, &index_tmp, &k);
+          axy = var[AXY * size + IX(i, index_tmp, k)];
         }
         if (i == 0) {
           index_tmp = i + 1;
-          axy = area_xy(para, var, &index_tmp, &j, &k);
+          //axy = area_xy(para, var, &index_tmp, &j, &k);
+          axy = var[AXY * size + IX(index_tmp, j, k)];
         }
         // heat dissipation by area
         Q_dot = rack_heat[id] * axy / rack_area[id];

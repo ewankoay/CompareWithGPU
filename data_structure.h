@@ -189,7 +189,10 @@
 #define RESX 65  // Resistance in X, i.e., tile, plastic curtain, etc.
 #define RESY 66  // Resistance source in Y, i.e., tile, plastic curtain, etc.
 #define RESZ 67  // Resistance source in Z, i.e., tile, plastic curtain, etc.
-#define C2BC 68  // Last variable
+#define AXY 68 // Cell area in XY
+#define AYZ 69 // Cell area in YZ
+#define AZX 70 // Cell area in ZX
+#define C2BC 71  // Last variable
 
 typedef enum { NOSLIP, SLIP, INFLOW, OUTFLOW, PERIODIC, SYMMETRY } BCTYPE;
 

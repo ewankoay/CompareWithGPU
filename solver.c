@@ -759,9 +759,14 @@ int initial_tile_velocity(PARA_DATA *para, REAL **var, int **BINDEX) {
     i = BINDEX[0][it];
     j = BINDEX[1][it];
     k = BINDEX[2][it];
+    /*
     axy = area_xy(para, var, i, j, k);
     ayz = area_yz(para, var, i, j, k);
     azx = area_zx(para, var, i, j, k);
+    */
+    axy = var[AXY][IX(i, j, k)];
+    ayz = var[AYZ][IX(i, j, k)];
+    azx = var[AZX][IX(i, j, k)];
     if (flagp[IX(i, j, k)] == TILE) {
       if (i == imax + 1) {
         var[TILE_FLOW_BC][IX(i, j, k)] =
@@ -965,9 +970,14 @@ int update_tile_velocity(PARA_DATA *para, REAL **var, int **BINDEX) {
     k = BINDEX[2][it];
     if (flagp[IX(i, j, k)] == TILE) {
       if (flagp[IX(i, j, k)] == TILE) {
+        /*
         axy = area_xy(para, var, i, j, k);
         ayz = area_yz(para, var, i, j, k);
         azx = area_zx(para, var, i, j, k);
+        */
+        axy = var[AXY][IX(i, j, k)];
+        ayz = var[AYZ][IX(i, j, k)];
+        azx = var[AZX][IX(i, j, k)];
         if (i == 0 || i == imax + 1) {
           A = ayz;
         }
@@ -1029,9 +1039,14 @@ REAL flowrate_pressure_correction(PARA_DATA *para, REAL **var, int **BINDEX,
     j = BINDEX[1][it];
     k = BINDEX[2][it];
     if (flagp[IX(i, j, k)] == TILE) {
+      /*
       axy = area_xy(para, var, i, j, k);
       ayz = area_yz(para, var, i, j, k);
       azx = area_zx(para, var, i, j, k);
+      */
+      axy = var[AXY][IX(i, j, k)];
+      ayz = var[AYZ][IX(i, j, k)];
+      azx = var[AZX][IX(i, j, k)];
       if (i == 0 || i == imax + 1) {
         A = ayz;
       }
@@ -1089,10 +1104,14 @@ int tile_source(PARA_DATA *para, REAL **var, int **BINDEX) {
     j = BINDEX[1][it];
     k = BINDEX[2][it];
 
+    /*
     axy = area_xy(para, var, i, j, k);
     ayz = area_yz(para, var, i, j, k);
     azx = area_zx(para, var, i, j, k);
-
+    */
+    axy = var[AXY][IX(i, j, k)];
+    ayz = var[AYZ][IX(i, j, k)];
+    azx = var[AZX][IX(i, j, k)];
     if (flagp[IX(i, j, k)] == TILE) {
       if (put_X) {
         if (u[IX(i, j, k)] > 0) {
@@ -1239,9 +1258,14 @@ int rack_model_black_box(PARA_DATA *para, REAL **var, int **BINDEX) {
     obj_type = BINDEX[5][it];
 
     // calculate the area
+    /*
     axy = area_xy(para, var, i, j, k);
     ayz = area_yz(para, var, i, j, k);
     azx = area_zx(para, var, i, j, k);
+    */
+    axy = var[AXY][IX(i, j, k)];
+    ayz = var[AYZ][IX(i, j, k)];
+    azx = var[AZX][IX(i, j, k)];
 
     // If it is rack cell and it is a rack inlet boundary
     if (obj_type == RACK) {
@@ -1306,7 +1330,8 @@ int rack_model_black_box(PARA_DATA *para, REAL **var, int **BINDEX) {
           var[VZBC][IX(i, j, k)] = 0.0;
           // Calculate the temperature at the outlet of rack
           if (k == 0) {  // This is to eliminate the divide by zero scenario
-            ayz = area_yz(para, var, i, j, k + 1);
+            //ayz = area_yz(para, var, i, j, k + 1);
+            ayz = var[AYZ][IX(i, j, k + 1)];
           }
           iin = i - sign(para->bc->RackDir[id]) * para->bc->RackMap[id][0];
           jin = j - sign(para->bc->RackDir[id]) * para->bc->RackMap[id][1];

@@ -55,6 +55,7 @@ assign_parameter(): solv.solver=GS
 assign_parameter(): solv.swipe_adv=100
 assign_parameter(): solv.swipe_dif=100
 assign_parameter(): solv.swipe_pro=100
+assign_parameter(): solv.num_inner_iteration=5
 assign_parameter(): solv.res_adv=0.000100
 assign_parameter(): solv.res_pro=0.000100
 assign_parameter(): solv.check_residual=1
@@ -354,352 +355,335 @@ Residual in diffusion V: 8.940697e-08
 Residual in diffusion W: 2.444722e-08
 Residual in projection: 9.925425e-03
 mass imbalance after projection: 4.020827e-01
+Residual in diffusion U: 3.052410e-07
+Residual in diffusion V: 1.192093e-07
+Residual in diffusion W: 1.479784e-07
+Residual in projection: 3.705651e-03
+mass imbalance after projection: 2.252414e-01
+Residual in diffusion U: 6.735791e-07
+Residual in diffusion V: 2.048910e-07
+Residual in diffusion W: 2.430752e-07
+Residual in projection: 2.324313e-03
+mass imbalance after projection: 1.565117e-01
+Residual in diffusion U: 5.653710e-07
+Residual in diffusion V: 1.192093e-07
+Residual in diffusion W: 5.704351e-07
+Residual in projection: 1.567304e-03
+mass imbalance after projection: 1.190785e-01
+Residual in diffusion U: 4.166504e-07
+Residual in diffusion V: 1.192093e-07
+Residual in diffusion W: 7.878989e-07
+Residual in projection: 1.105919e-03
+mass imbalance after projection: 9.585381e-02
 Residual in diffusion T: 3.814697e-06
-Physical time=0.0500 s, CPU time=1.3234 s, Time Ratio=0.0378
-Wall heat flux is 119055.640625
-Deficit: 1.210852e+05, Imbalance (Ein+Ewall-Eout)/Ewall: 1.022323e+00
-Residual in diffusion U: 1.401640e-07
-Residual in diffusion V: 4.209578e-07
-Residual in diffusion W: 1.253793e-07
-Residual in projection: 3.754914e-03
-mass imbalance after projection: 2.044316e-01
-Residual in diffusion T: 5.722046e-06
-Physical time=0.1000 s, CPU time=2.6700 s, Time Ratio=0.0375
-Wall heat flux is 6186.744629
-Deficit: 8.767951e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 1.431746e+00
-Residual in diffusion U: 4.102476e-07
-Residual in diffusion V: 1.192093e-07
-Residual in diffusion W: 6.183982e-07
-Residual in projection: 2.494469e-03
-mass imbalance after projection: 1.658342e-01
-Residual in diffusion T: 5.722046e-06
-Physical time=0.1500 s, CPU time=3.9612 s, Time Ratio=0.0379
-Wall heat flux is 740.676331
-Deficit: 3.371229e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 4.635679e+00
-Residual in diffusion U: 2.632733e-07
-Residual in diffusion V: 1.713634e-07
-Residual in diffusion W: 7.078052e-08
-Residual in projection: 2.270624e-03
-mass imbalance after projection: 1.567584e-01
+Physical time=0.0500 s, CPU time=6.3013 s, Time Ratio=0.0079
+Wall heat flux is 1144750.000000
+Deficit: 1.115025e+06, Imbalance (Ein+Ewall-Eout)/Ewall: 1.002377e+00
+Residual in diffusion U: 1.606531e-07
+Residual in diffusion V: 1.937151e-07
+Residual in diffusion W: 5.622860e-08
+Residual in projection: 3.407538e-03
+mass imbalance after projection: 1.619911e-01
+Residual in diffusion U: 7.216877e-07
+Residual in diffusion V: 2.607703e-07
+Residual in diffusion W: 1.238659e-07
+Residual in projection: 2.875552e-03
+mass imbalance after projection: 1.592387e-01
+Residual in diffusion U: 1.255248e-07
+Residual in diffusion V: 2.756715e-07
+Residual in diffusion W: 1.322478e-07
+Residual in projection: 1.856744e-03
+mass imbalance after projection: 1.193436e-01
+Residual in diffusion U: 9.292271e-07
+Residual in diffusion V: 2.831221e-07
+Residual in diffusion W: 1.098961e-07
+Residual in projection: 1.037925e-03
+mass imbalance after projection: 8.104611e-02
+Residual in diffusion U: 6.610917e-07
+Residual in diffusion V: 2.682209e-07
+Residual in diffusion W: 8.754432e-08
+Residual in projection: 5.233064e-04
+mass imbalance after projection: 5.437035e-02
+Residual in diffusion T: 3.814697e-06
+Physical time=0.1000 s, CPU time=10.7480 s, Time Ratio=0.0093
+Wall heat flux is 1102348.250000
+Deficit: 1.071271e+06, Imbalance (Ein+Ewall-Eout)/Ewall: 1.002474e+00
+Residual in diffusion U: 7.204944e-07
+Residual in diffusion V: 4.619360e-07
+Residual in diffusion W: 1.229346e-07
+Residual in projection: 7.510632e-04
+mass imbalance after projection: 7.591649e-02
+Residual in diffusion U: 2.399320e-07
+Residual in diffusion V: 4.619360e-07
+Residual in diffusion W: 1.154840e-07
+Residual in projection: 7.895976e-04
+mass imbalance after projection: 8.104771e-02
+Residual in diffusion U: 2.719753e-07
+Residual in diffusion V: 4.321337e-07
+Residual in diffusion W: 1.080334e-07
+Residual in projection: 7.912405e-04
+mass imbalance after projection: 7.528503e-02
+Residual in diffusion U: 2.698216e-07
+Residual in diffusion V: 4.172325e-07
+Residual in diffusion W: 1.043081e-07
+Residual in projection: 7.182248e-04
+mass imbalance after projection: 6.517066e-02
+Residual in diffusion U: 2.780289e-07
+Residual in diffusion V: 3.874302e-07
+Residual in diffusion W: 9.685755e-08
+Residual in projection: 5.995752e-04
+mass imbalance after projection: 5.419470e-02
 Residual in diffusion T: 7.629395e-06
-Physical time=0.2000 s, CPU time=5.4142 s, Time Ratio=0.0369
-Wall heat flux is 510.949097
-Deficit: 3.139082e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 6.340457e+00
-Residual in diffusion U: 2.082670e-07
-Residual in diffusion V: 3.650784e-07
-Residual in diffusion W: 1.286098e-07
-Residual in projection: 1.987800e-03
-mass imbalance after projection: 1.474399e-01
-Residual in diffusion T: 7.629395e-06
-Physical time=0.2500 s, CPU time=6.7564 s, Time Ratio=0.0370
-Wall heat flux is 525.461487
-Deficit: 3.147869e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 6.247319e+00
-Residual in diffusion U: 9.922078e-07
-Residual in diffusion V: 5.066395e-07
-Residual in diffusion W: 1.620501e-07
-Residual in projection: 1.623653e-03
-mass imbalance after projection: 1.367968e-01
-Residual in diffusion T: 7.629395e-06
-Physical time=0.3000 s, CPU time=8.0308 s, Time Ratio=0.0374
-Wall heat flux is 549.820251
-Deficit: 3.166275e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 6.062392e+00
-Residual in diffusion U: 9.230571e-07
-Residual in diffusion V: 5.960464e-07
-Residual in diffusion W: 1.750886e-07
-Residual in projection: 1.349352e-03
-mass imbalance after projection: 1.262456e-01
-Residual in diffusion T: 7.629395e-06
-Physical time=0.3500 s, CPU time=9.3100 s, Time Ratio=0.0376
-Wall heat flux is 576.782166
-Deficit: 3.186974e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 5.869408e+00
-Residual in diffusion U: 2.513407e-07
-Residual in diffusion V: 6.258488e-07
-Residual in diffusion W: 1.713634e-07
-Residual in projection: 1.134634e-03
-mass imbalance after projection: 1.163893e-01
-Residual in diffusion T: 7.629395e-06
-Physical time=0.4000 s, CPU time=10.6095 s, Time Ratio=0.0377
-Wall heat flux is 606.081604
-Deficit: 3.209782e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 5.673118e+00
-Residual in diffusion U: 4.090834e-07
+Physical time=0.1500 s, CPU time=15.2171 s, Time Ratio=0.0099
+Wall heat flux is 1114172.375000
+Deficit: 1.083036e+06, Imbalance (Ein+Ewall-Eout)/Ewall: 1.002447e+00
+Residual in diffusion U: 1.730514e-07
 Residual in diffusion V: 6.556511e-07
-Residual in diffusion W: 1.713634e-07
-Residual in projection: 1.001112e-03
-mass imbalance after projection: 1.072395e-01
+Residual in diffusion W: 1.490116e-07
+Residual in projection: 5.394518e-04
+mass imbalance after projection: 5.902202e-02
+Residual in diffusion U: 2.305023e-07
+Residual in diffusion V: 6.407499e-07
+Residual in diffusion W: 1.266599e-07
+Residual in projection: 4.880279e-04
+mass imbalance after projection: 5.946790e-02
+Residual in diffusion U: 3.158348e-07
+Residual in diffusion V: 5.811453e-07
+Residual in diffusion W: 1.117587e-07
+Residual in projection: 4.766528e-04
+mass imbalance after projection: 5.631958e-02
+Residual in diffusion U: 3.724126e-07
+Residual in diffusion V: 5.662441e-07
+Residual in diffusion W: 1.043081e-07
+Residual in projection: 4.506744e-04
+mass imbalance after projection: 5.161997e-02
+Residual in diffusion U: 4.032045e-07
+Residual in diffusion V: 5.662441e-07
+Residual in diffusion W: 1.005828e-07
+Residual in projection: 4.083999e-04
+mass imbalance after projection: 4.658964e-02
 Residual in diffusion T: 7.629395e-06
-Physical time=0.4500 s, CPU time=11.9089 s, Time Ratio=0.0378
-Wall heat flux is 637.885620
-Deficit: 3.234779e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 5.475390e+00
-Residual in diffusion U: 5.331822e-07
-Residual in diffusion V: 7.152557e-07
-Residual in diffusion W: 1.713634e-07
-Residual in projection: 8.876920e-04
-mass imbalance after projection: 9.868477e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=0.5000 s, CPU time=13.2093 s, Time Ratio=0.0379
-Wall heat flux is 671.250549
-Deficit: 3.261035e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 5.284954e+00
-Residual in diffusion U: 6.610062e-07
-Residual in diffusion V: 7.897615e-07
-Residual in diffusion W: 1.788139e-07
-Residual in projection: 7.949993e-04
-mass imbalance after projection: 9.069833e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=0.5500 s, CPU time=14.5149 s, Time Ratio=0.0379
-Wall heat flux is 705.787537
-Deficit: 3.288197e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 5.104289e+00
-Residual in diffusion U: 8.468051e-07
+Physical time=0.2000 s, CPU time=19.8652 s, Time Ratio=0.0101
+Wall heat flux is 1127002.250000
+Deficit: 1.095855e+06, Imbalance (Ein+Ewall-Eout)/Ewall: 1.002419e+00
+Residual in diffusion U: 2.447632e-07
 Residual in diffusion V: 8.642673e-07
-Residual in diffusion W: 1.788139e-07
-Residual in projection: 7.168502e-04
-mass imbalance after projection: 8.339125e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=0.6000 s, CPU time=15.8730 s, Time Ratio=0.0378
-Wall heat flux is 741.900269
-Deficit: 3.316441e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 4.931897e+00
-Residual in diffusion U: 1.727603e-07
-Residual in diffusion V: 9.685755e-07
-Residual in diffusion W: 1.788139e-07
-Residual in projection: 6.424161e-04
-mass imbalance after projection: 7.695965e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=0.6500 s, CPU time=17.1863 s, Time Ratio=0.0378
-Wall heat flux is 779.648743
-Deficit: 3.345575e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 4.768624e+00
-Residual in diffusion U: 1.918525e-07
-Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 1.862645e-07
-Residual in projection: 5.857404e-04
-mass imbalance after projection: 7.161525e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=0.7000 s, CPU time=18.5161 s, Time Ratio=0.0378
-Wall heat flux is 819.188354
-Deficit: 3.375687e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 4.613531e+00
-Residual in diffusion U: 2.062880e-07
-Residual in diffusion V: 1.192093e-07
-Residual in diffusion W: 1.788139e-07
-Residual in projection: 5.774498e-04
-mass imbalance after projection: 6.753188e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=0.7500 s, CPU time=19.8422 s, Time Ratio=0.0378
-Wall heat flux is 860.346741
-Deficit: 3.406592e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 4.467086e+00
-Residual in diffusion U: 2.318993e-07
-Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 1.788139e-07
-Residual in projection: 5.845577e-04
-mass imbalance after projection: 6.476087e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=0.8000 s, CPU time=21.1614 s, Time Ratio=0.0378
-Wall heat flux is 902.716736
-Deficit: 3.438124e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 4.329422e+00
-Residual in diffusion U: 2.761371e-07
-Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 1.788139e-07
-Residual in projection: 5.495250e-04
-mass imbalance after projection: 6.312121e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=0.8500 s, CPU time=22.4847 s, Time Ratio=0.0378
-Wall heat flux is 945.593506
-Deficit: 3.469891e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 4.201359e+00
-Residual in diffusion U: 3.217719e-07
-Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 1.825392e-07
-Residual in projection: 4.753917e-04
-mass imbalance after projection: 6.207192e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=0.9000 s, CPU time=23.8183 s, Time Ratio=0.0378
-Wall heat flux is 987.919189
-Deficit: 3.501405e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 4.083693e+00
-Residual in diffusion U: 3.674068e-07
-Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 1.862645e-07
-Residual in projection: 4.908014e-04
-mass imbalance after projection: 6.072785e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=0.9500 s, CPU time=25.1728 s, Time Ratio=0.0377
-Wall heat flux is 1028.661255
-Deficit: 3.532304e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.976431e+00
-Residual in diffusion U: 4.116446e-07
-Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 1.825392e-07
-Residual in projection: 5.415357e-04
-mass imbalance after projection: 5.810993e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.0000 s, CPU time=26.4821 s, Time Ratio=0.0378
-Wall heat flux is 1066.341675
-Deficit: 3.561613e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.881364e+00
-Residual in diffusion U: 4.535541e-07
-Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 1.750886e-07
-Residual in projection: 5.521290e-04
-mass imbalance after projection: 5.353462e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.0500 s, CPU time=27.7930 s, Time Ratio=0.0378
-Wall heat flux is 1100.006592
-Deficit: 3.589077e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.797631e+00
-Residual in diffusion U: 4.908070e-07
-Residual in diffusion V: 2.384186e-07
 Residual in diffusion W: 1.564622e-07
-Residual in projection: 5.186349e-04
-mass imbalance after projection: 4.700369e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.1000 s, CPU time=29.1104 s, Time Ratio=0.0378
-Wall heat flux is 1128.791748
-Deficit: 3.614274e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.724981e+00
-Residual in diffusion U: 5.243346e-07
-Residual in diffusion V: 2.384186e-07
+Residual in projection: 3.844798e-04
+mass imbalance after projection: 4.731967e-02
+Residual in diffusion U: 3.463938e-07
+Residual in diffusion V: 8.493662e-07
 Residual in diffusion W: 1.341105e-07
-Residual in projection: 4.414022e-04
-mass imbalance after projection: 3.957216e-02
+Residual in projection: 3.934205e-04
+mass imbalance after projection: 4.735062e-02
+Residual in diffusion U: 4.044850e-07
+Residual in diffusion V: 7.897615e-07
+Residual in diffusion W: 1.117587e-07
+Residual in projection: 3.837347e-04
+mass imbalance after projection: 4.593593e-02
+Residual in diffusion U: 4.193862e-07
+Residual in diffusion V: 7.599592e-07
+Residual in diffusion W: 9.797513e-07
+Residual in projection: 3.652275e-04
+mass imbalance after projection: 4.371721e-02
+Residual in diffusion U: 4.047761e-07
+Residual in diffusion V: 7.301569e-07
+Residual in diffusion W: 9.089708e-07
+Residual in projection: 3.434569e-04
+mass imbalance after projection: 4.119890e-02
 Residual in diffusion T: 7.629395e-06
-Physical time=1.1500 s, CPU time=30.4481 s, Time Ratio=0.0378
-Wall heat flux is 1152.042969
-Deficit: 3.636690e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.663448e+00
-Residual in diffusion U: 5.522743e-07
+Physical time=0.2500 s, CPU time=24.2175 s, Time Ratio=0.0103
+Wall heat flux is 1138663.375000
+Deficit: 1.107492e+06, Imbalance (Ein+Ewall-Eout)/Ewall: 1.002393e+00
+Residual in diffusion U: 3.344612e-07
+Residual in diffusion V: 1.192093e-07
+Residual in diffusion W: 1.639128e-07
+Residual in projection: 3.202558e-04
+mass imbalance after projection: 4.214749e-02
+Residual in diffusion U: 3.173482e-07
 Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 1.452863e-07
-Residual in projection: 3.284961e-04
-mass imbalance after projection: 3.367423e-02
+Residual in diffusion W: 1.192093e-07
+Residual in projection: 3.115600e-04
+mass imbalance after projection: 4.193586e-02
+Residual in diffusion U: 2.727611e-07
+Residual in diffusion V: 9.834766e-07
+Residual in diffusion W: 9.462237e-07
+Residual in projection: 3.144778e-04
+mass imbalance after projection: 4.042173e-02
+Residual in diffusion U: 9.437790e-07
+Residual in diffusion V: 9.238720e-07
+Residual in diffusion W: 8.046627e-07
+Residual in projection: 3.034342e-04
+mass imbalance after projection: 3.822397e-02
+Residual in diffusion U: 6.655901e-07
+Residual in diffusion V: 8.791685e-07
+Residual in diffusion W: 7.152557e-07
+Residual in projection: 2.858620e-04
+mass imbalance after projection: 3.580132e-02
+Residual in diffusion T: 5.722046e-06
+Physical time=0.3000 s, CPU time=28.5083 s, Time Ratio=0.0105
+Wall heat flux is 1149325.875000
+Deficit: 1.118126e+06, Imbalance (Ein+Ewall-Eout)/Ewall: 1.002370e+00
+Residual in diffusion U: 2.480811e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 1.415610e-07
+Residual in projection: 3.037844e-04
+mass imbalance after projection: 3.364405e-02
+Residual in diffusion U: 7.246545e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 9.089708e-07
+Residual in projection: 2.964176e-04
+mass imbalance after projection: 3.174138e-02
+Residual in diffusion U: 9.364421e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 6.034970e-07
+Residual in projection: 2.776459e-04
+mass imbalance after projection: 2.980397e-02
+Residual in diffusion U: 9.493197e-07
+Residual in diffusion V: 9.834766e-07
+Residual in diffusion W: 4.246831e-07
+Residual in projection: 2.586395e-04
+mass imbalance after projection: 2.800469e-02
+Residual in diffusion U: 2.377783e-07
+Residual in diffusion V: 8.940697e-07
+Residual in diffusion W: 3.129244e-07
+Residual in projection: 2.562553e-04
+mass imbalance after projection: 2.640012e-02
 Residual in diffusion T: 7.629395e-06
-Physical time=1.2000 s, CPU time=31.7763 s, Time Ratio=0.0378
-Wall heat flux is 1169.027588
-Deficit: 3.655689e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.613429e+00
-Residual in diffusion U: 5.736947e-07
+Physical time=0.3500 s, CPU time=32.9852 s, Time Ratio=0.0106
+Wall heat flux is 1159237.875000
+Deficit: 1.128006e+06, Imbalance (Ein+Ewall-Eout)/Ewall: 1.002349e+00
+Residual in diffusion U: 6.398768e-07
 Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 1.713634e-07
-Residual in projection: 3.279001e-04
-mass imbalance after projection: 3.250122e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.2500 s, CPU time=33.1211 s, Time Ratio=0.0377
-Wall heat flux is 1179.497681
-Deficit: 3.670945e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.574605e+00
-Residual in diffusion U: 5.885959e-07
+Residual in diffusion W: 1.192093e-07
+Residual in projection: 2.734959e-04
+mass imbalance after projection: 2.407438e-02
+Residual in diffusion U: 2.066226e-07
 Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 2.011657e-07
-Residual in projection: 3.247112e-04
-mass imbalance after projection: 3.677819e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.3000 s, CPU time=34.4885 s, Time Ratio=0.0377
-Wall heat flux is 1184.167603
-Deficit: 3.682946e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.544866e+00
-Residual in diffusion U: 6.249174e-07
+Residual in diffusion W: 5.066395e-07
+Residual in projection: 2.759844e-04
+mass imbalance after projection: 2.397255e-02
+Residual in diffusion U: 3.085297e-07
 Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 2.458692e-07
-Residual in projection: 3.309846e-04
-mass imbalance after projection: 4.378891e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.3500 s, CPU time=35.8815 s, Time Ratio=0.0376
-Wall heat flux is 1186.822632
-Deficit: 3.694980e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.515726e+00
-Residual in diffusion U: 6.761402e-07
-Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 3.948808e-07
+Residual in projection: 2.709627e-04
+mass imbalance after projection: 2.418112e-02
+Residual in diffusion U: 3.786699e-07
+Residual in diffusion V: 9.834766e-07
+Residual in diffusion W: 3.203750e-07
+Residual in projection: 2.622455e-04
+mass imbalance after projection: 2.435873e-02
+Residual in diffusion U: 4.192989e-07
+Residual in diffusion V: 9.089708e-07
 Residual in diffusion W: 2.980232e-07
-Residual in projection: 3.429353e-04
-mass imbalance after projection: 5.079487e-02
+Residual in projection: 2.521724e-04
+mass imbalance after projection: 2.439405e-02
 Residual in diffusion T: 7.629395e-06
-Physical time=1.4000 s, CPU time=37.2815 s, Time Ratio=0.0376
-Wall heat flux is 1185.900757
-Deficit: 3.704966e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.492048e+00
-Residual in diffusion U: 7.227063e-07
+Physical time=0.4000 s, CPU time=37.3630 s, Time Ratio=0.0107
+Wall heat flux is 1168562.875000
+Deficit: 1.137304e+06, Imbalance (Ein+Ewall-Eout)/Ewall: 1.002330e+00
+Residual in diffusion U: 1.993722e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 9.387732e-07
+Residual in projection: 2.382994e-04
+mass imbalance after projection: 2.834710e-02
+Residual in diffusion U: 3.107343e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 6.482005e-07
+Residual in projection: 2.246797e-04
+mass imbalance after projection: 3.102766e-02
+Residual in diffusion U: 3.559107e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 6.109476e-07
+Residual in projection: 2.115816e-04
+mass imbalance after projection: 3.218295e-02
+Residual in diffusion U: 3.879286e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 8.195639e-07
+Residual in projection: 1.993775e-04
+mass imbalance after projection: 3.249616e-02
+Residual in diffusion U: 4.047761e-07
+Residual in diffusion V: 9.834766e-07
+Residual in diffusion W: 9.313226e-07
+Residual in projection: 1.883358e-04
+mass imbalance after projection: 3.234671e-02
+Residual in diffusion T: 3.814697e-06
+Physical time=0.4500 s, CPU time=41.6446 s, Time Ratio=0.0108
+Wall heat flux is 1177449.375000
+Deficit: 1.146166e+06, Imbalance (Ein+Ewall-Eout)/Ewall: 1.002312e+00
+Residual in diffusion U: 2.635934e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 9.313226e-08
+Residual in projection: 2.295449e-04
+mass imbalance after projection: 3.702958e-02
+Residual in diffusion U: 2.814340e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 8.940697e-07
+Residual in projection: 2.548918e-04
+mass imbalance after projection: 3.914722e-02
+Residual in diffusion U: 3.020978e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 2.384186e-07
+Residual in projection: 2.335180e-04
+mass imbalance after projection: 3.964896e-02
+Residual in diffusion U: 2.916204e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 2.756715e-07
+Residual in projection: 2.352819e-04
+mass imbalance after projection: 3.937519e-02
+Residual in diffusion U: 2.619927e-07
+Residual in diffusion V: 8.046627e-07
+Residual in diffusion W: 2.980232e-07
+Residual in projection: 2.300888e-04
+mass imbalance after projection: 3.872999e-02
+Residual in diffusion T: 3.814697e-06
+Physical time=0.5000 s, CPU time=46.3347 s, Time Ratio=0.0108
+Wall heat flux is 1185984.125000
+Deficit: 1.154689e+06, Imbalance (Ein+Ewall-Eout)/Ewall: 1.002295e+00
+Residual in diffusion U: 2.629531e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 2.086163e-07
+Residual in projection: 2.656716e-04
+mass imbalance after projection: 4.107041e-02
+Residual in diffusion U: 2.587913e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 3.129244e-07
+Residual in projection: 2.869433e-04
+mass imbalance after projection: 4.187021e-02
+Residual in diffusion U: 2.624583e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 3.725290e-07
+Residual in projection: 2.645459e-04
+mass imbalance after projection: 4.166316e-02
+Residual in diffusion U: 9.973883e-07
+Residual in diffusion V: 2.384186e-07
+Residual in diffusion W: 4.097819e-07
+Residual in projection: 2.483204e-04
+mass imbalance after projection: 4.100265e-02
+Residual in diffusion U: 8.087372e-07
+Residual in diffusion V: 9.983778e-07
+Residual in diffusion W: 4.321337e-07
+Residual in projection: 2.400801e-04
+mass imbalance after projection: 4.014741e-02
+Residual in diffusion T: 7.629395e-06
+Physical time=0.5500 s, CPU time=50.8292 s, Time Ratio=0.0108
+Wall heat flux is 1194338.000000
+Deficit: 1.163036e+06, Imbalance (Ein+Ewall-Eout)/Ewall: 1.002279e+00
+Residual in diffusion U: 9.344076e-07
 Residual in diffusion V: 2.384186e-07
 Residual in diffusion W: 3.427267e-07
-Residual in projection: 3.443798e-04
-mass imbalance after projection: 5.642736e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.4500 s, CPU time=38.6044 s, Time Ratio=0.0376
-Wall heat flux is 1182.793579
-Deficit: 3.713756e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.471573e+00
-Residual in diffusion U: 7.655472e-07
+Residual in projection: 2.628975e-04
+mass imbalance after projection: 4.005789e-02
+Residual in diffusion U: 8.254428e-07
 Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 3.874302e-07
-Residual in projection: 3.563240e-04
-mass imbalance after projection: 6.033533e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.5000 s, CPU time=40.0002 s, Time Ratio=0.0375
-Wall heat flux is 1177.851685
-Deficit: 3.721378e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.454087e+00
-Residual in diffusion U: 8.009374e-07
+Residual in diffusion W: 4.246831e-07
+Residual in projection: 2.786815e-04
+mass imbalance after projection: 3.970690e-02
+Residual in diffusion U: 7.833587e-07
 Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 4.321337e-07
-Residual in projection: 3.653057e-04
-mass imbalance after projection: 6.271461e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.5500 s, CPU time=41.3791 s, Time Ratio=0.0375
-Wall heat flux is 1172.421021
-Deficit: 3.728244e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.438545e+00
-Residual in diffusion U: 8.344650e-07
+Residual in diffusion W: 4.842877e-07
+Residual in projection: 2.541952e-04
+mass imbalance after projection: 3.899481e-02
+Residual in diffusion U: 6.241607e-07
 Residual in diffusion V: 2.384186e-07
-Residual in diffusion W: 4.693866e-07
-Residual in projection: 3.755093e-04
-mass imbalance after projection: 6.394530e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.6000 s, CPU time=42.7876 s, Time Ratio=0.0374
-Wall heat flux is 1167.600220
-Deficit: 3.735235e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.422924e+00
-Residual in diffusion U: 8.754432e-07
-Residual in diffusion V: 2.682209e-07
-Residual in diffusion W: 4.991889e-07
-Residual in projection: 3.929213e-04
-mass imbalance after projection: 6.435526e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.6500 s, CPU time=44.3192 s, Time Ratio=0.0372
-Wall heat flux is 1164.197144
-Deficit: 3.742853e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.406128e+00
-Residual in diffusion U: 9.313226e-07
-Residual in diffusion V: 2.682209e-07
-Residual in diffusion W: 6.034970e-07
-Residual in projection: 4.266646e-04
-mass imbalance after projection: 6.409854e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.7000 s, CPU time=45.6650 s, Time Ratio=0.0372
-Wall heat flux is 1163.187744
-Deficit: 3.751908e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.386461e+00
-Residual in diffusion U: 9.872019e-07
-Residual in diffusion V: 3.576279e-07
-Residual in diffusion W: 7.525086e-07
-Residual in projection: 4.446590e-04
-mass imbalance after projection: 6.315801e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.7500 s, CPU time=46.9920 s, Time Ratio=0.0372
-Wall heat flux is 1164.798462
-Deficit: 3.762635e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.363577e+00
-Residual in diffusion U: 2.142042e-07
-Residual in diffusion V: 2.980232e-07
-Residual in diffusion W: 9.015203e-07
-Residual in projection: 4.501510e-04
-mass imbalance after projection: 6.143544e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.8000 s, CPU time=48.3300 s, Time Ratio=0.0372
-Wall heat flux is 1169.576050
-Deficit: 3.775459e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.336788e+00
-Residual in diffusion U: 2.328306e-07
-Residual in diffusion V: 3.576279e-07
-Residual in diffusion W: 1.639128e-07
-Residual in projection: 4.430860e-04
-mass imbalance after projection: 5.885174e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.8500 s, CPU time=49.6856 s, Time Ratio=0.0372
-Wall heat flux is 1179.475220
-Deficit: 3.791079e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.304968e+00
-Residual in diffusion U: 2.533197e-07
-Residual in diffusion V: 4.172325e-07
-Residual in diffusion W: 1.788139e-07
-Residual in projection: 4.229285e-04
-mass imbalance after projection: 5.540038e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.9000 s, CPU time=51.0586 s, Time Ratio=0.0372
-Wall heat flux is 1193.178345
-Deficit: 3.809799e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.267955e+00
-Residual in diffusion U: 2.719462e-07
-Residual in diffusion V: 5.364418e-07
-Residual in diffusion W: 2.011657e-07
-Residual in projection: 3.785565e-04
-mass imbalance after projection: 5.116351e-02
-Residual in diffusion T: 7.629395e-06
-Physical time=1.9500 s, CPU time=52.5263 s, Time Ratio=0.0371
-Wall heat flux is 1209.242798
-Deficit: 3.830033e+03, Imbalance (Ein+Ewall-Eout)/Ewall: 3.229263e+00
-Residual in diffusion U: 2.924353e-07
-Residual in diffusion V: 6.556511e-07
-Residual in diffusion W: 2.235174e-07
+Residual in diffusion W: 5.140901e-07

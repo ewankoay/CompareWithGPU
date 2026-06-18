@@ -128,9 +128,15 @@ int set_bnd_vel(PARA_DATA *para, REAL **var, int var_type, REAL *psi,
       j = BINDEX[1][it];
       k = BINDEX[2][it];
 
+      /*
       axy = area_xy(para, var, i, j, k);
       ayz = area_yz(para, var, i, j, k);
       azx = area_zx(para, var, i, j, k);
+      */
+
+      axy = var[AXY][IX(i, j, k)];
+      ayz = var[AYZ][IX(i, j, k)];
+      azx = var[AZX][IX(i, j, k)];
 
       // Inlet
       if (flagp[IX(i, j, k)] == INLET) {
@@ -236,9 +242,15 @@ int set_bnd_vel(PARA_DATA *para, REAL **var, int var_type, REAL *psi,
       j = BINDEX[1][it];
       k = BINDEX[2][it];
 
+      /*
       axy = area_xy(para, var, i, j, k);
       ayz = area_yz(para, var, i, j, k);
       azx = area_zx(para, var, i, j, k);
+      */
+
+      axy = var[AXY][IX(i, j, k)];
+      ayz = var[AYZ][IX(i, j, k)];
+      azx = var[AZX][IX(i, j, k)];
       // Inlet
       if (flagp[IX(i, j, k)] == INLET) {
         psi[IX(i, j, k)] = var[VYBC][IX(i, j, k)];
@@ -343,9 +355,15 @@ int set_bnd_vel(PARA_DATA *para, REAL **var, int var_type, REAL *psi,
       j = BINDEX[1][it];
       k = BINDEX[2][it];
 
+      /*
       axy = area_xy(para, var, i, j, k);
       ayz = area_yz(para, var, i, j, k);
       azx = area_zx(para, var, i, j, k);
+      */
+
+      axy = var[AXY][IX(i, j, k)];
+      ayz = var[AYZ][IX(i, j, k)];
+      azx = var[AZX][IX(i, j, k)];
       // Inlet
       if (flagp[IX(i, j, k)] == INLET) {
         psi[IX(i, j, k)] = var[VZBC][IX(i, j, k)];
@@ -488,9 +506,15 @@ int set_bnd_vel_adv(PARA_DATA *para, REAL **var, int var_type, REAL *psi,
       j = BINDEX[1][it];
       k = BINDEX[2][it];
 
+      /*
       axy = area_xy(para, var, i, j, k);
       ayz = area_yz(para, var, i, j, k);
       azx = area_zx(para, var, i, j, k);
+      */
+
+      axy = var[AXY][IX(i, j, k)];
+      ayz = var[AYZ][IX(i, j, k)];
+      azx = var[AZX][IX(i, j, k)];
 
       // Inlet
       if (flagp[IX(i, j, k)] == INLET) {
@@ -579,9 +603,15 @@ int set_bnd_vel_adv(PARA_DATA *para, REAL **var, int var_type, REAL *psi,
       j = BINDEX[1][it];
       k = BINDEX[2][it];
 
+      /*
       axy = area_xy(para, var, i, j, k);
       ayz = area_yz(para, var, i, j, k);
       azx = area_zx(para, var, i, j, k);
+      */
+
+      axy = var[AXY][IX(i, j, k)];
+      ayz = var[AYZ][IX(i, j, k)];
+      azx = var[AZX][IX(i, j, k)];
       // Inlet
       if (flagp[IX(i, j, k)] == INLET) {
         psi[IX(i, j, k)] = var[VYBC][IX(i, j, k)];
@@ -668,9 +698,16 @@ int set_bnd_vel_adv(PARA_DATA *para, REAL **var, int var_type, REAL *psi,
       j = BINDEX[1][it];
       k = BINDEX[2][it];
 
+      /*
       axy = area_xy(para, var, i, j, k);
       ayz = area_yz(para, var, i, j, k);
       azx = area_zx(para, var, i, j, k);
+      */
+
+      axy = var[AXY][IX(i, j, k)];
+      ayz = var[AYZ][IX(i, j, k)];
+      azx = var[AZX][IX(i, j, k)];
+
       // Inlet
       if (flagp[IX(i, j, k)] == INLET) {
         psi[IX(i, j, k)] = var[VZBC][IX(i, j, k)];
@@ -789,9 +826,15 @@ int set_bnd_temp(PARA_DATA *para, REAL **var, int var_type, REAL *psi,
     j = BINDEX[1][it];
     k = BINDEX[2][it];
 
+    /*
     axy = area_xy(para, var, i, j, k);
     ayz = area_yz(para, var, i, j, k);
     azx = area_zx(para, var, i, j, k);
+    */
+
+    axy = var[AXY][IX(i, j, k)];
+    ayz = var[AYZ][IX(i, j, k)];
+    azx = var[AZX][IX(i, j, k)];
 
     /*-------------------------------------------------------------------------
     | Inlet boundary
@@ -1481,9 +1524,15 @@ REAL adjust_velocity(PARA_DATA *para, REAL **var, int **BINDEX) {
     j = BINDEX[1][it];
     k = BINDEX[2][it];
 
+    /*
     axy = area_xy(para, var, i, j, k);
     ayz = area_yz(para, var, i, j, k);
     azx = area_zx(para, var, i, j, k);
+    */
+
+    axy = var[AXY][IX(i, j, k)];
+    ayz = var[AYZ][IX(i, j, k)];
+    azx = var[AZX][IX(i, j, k)];
     /*-------------------------------------------------------------------------
     | Compute the total inflow
     -------------------------------------------------------------------------*/

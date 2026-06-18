@@ -50,6 +50,7 @@ solv.solver GS
 solv.swipe_adv 100
 solv.swipe_dif 100
 solv.swipe_pro 100
+solv.num_inner_iteration 5
 solv.res_adv 0.0001
 solv.res_dif 0.0001
 solv.res_pro 0.0001

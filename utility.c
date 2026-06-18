@@ -560,11 +560,15 @@ REAL qwall(PARA_DATA *para, REAL **var, int **BINDEX) {
     i = BINDEX[0][it];
     j = BINDEX[1][it];
     k = BINDEX[2][it];
-
+    // New area finding sequence
+    /*
     axy = area_xy(para, var, i, j, k);
     ayz = area_yz(para, var, i, j, k);
     azx = area_zx(para, var, i, j, k);
-
+    */
+    axy = var[AXY][IX(i, j, k)];
+    ayz = var[AYZ][IX(i, j, k)];
+    azx = var[AZX][IX(i, j, k)];
     if (flagp[IX(i, j, k)] == 1) {
       if (i == 0) {
         if (flagp[IX(i + 1, j, k)] < 0) {
@@ -1062,7 +1066,8 @@ int check_tile_flowrate(PARA_DATA *para, REAL **var, int **BINDEX) {
     if (flagp[IX(i, j, k)] == TILE) {
       // West or East Boundary
       if (put_X) {
-        A = area_yz(para, var, i, j, k);
+        // A = area_yz(para, var, i, j, k);
+        A = var[AYZ][IX(i, j, k)];
 
         if (i > 0)
           V_tmp = u[IX(i - 1, j, k)];
@@ -1073,7 +1078,8 @@ int check_tile_flowrate(PARA_DATA *para, REAL **var, int **BINDEX) {
       }
       // South and North Boundary
       if (put_Y) {
-        A = area_zx(para, var, i, j, k);
+        // A = area_zx(para, var, i, j, k);
+        A = var[AZX][IX(i, j, k)];
 
         if (j > 0)
           V_tmp = v[IX(i, j - 1, k)];
@@ -1084,7 +1090,8 @@ int check_tile_flowrate(PARA_DATA *para, REAL **var, int **BINDEX) {
       }
       // Ceiling and Floor Boundary
       if (put_Z) {
-        A = area_xy(para, var, i, j, k);
+        // A = area_xy(para, var, i, j, k);
+        A = var[AXY][IX(i, j, k)];
 
         if (k > 0)
           V_tmp = w[IX(i, j, k - 1)];
@@ -1096,8 +1103,8 @@ int check_tile_flowrate(PARA_DATA *para, REAL **var, int **BINDEX) {
     }
     else if (flagp[IX(i, j, k)] == OUTLET) {
       // West or East Boundary
-      A = area_yz(para, var, i, j, k);
-
+      // A = area_yz(para, var, i, j, k);
+      A = var[AYZ][IX(i, j, k)];
       if (i > 0)
         V_tmp = u[IX(i - 1, j, k)];
       else
@@ -1105,7 +1112,8 @@ int check_tile_flowrate(PARA_DATA *para, REAL **var, int **BINDEX) {
 
       QPort[id] += V_tmp * A;
       // South and North Boundary
-      A = area_zx(para, var, i, j, k);
+      // A = area_zx(para, var, i, j, k);
+        A = var[AZX][IX(i, j, k)];
 
       if (j > 0)
         V_tmp = v[IX(i, j - 1, k)];
@@ -1114,7 +1122,8 @@ int check_tile_flowrate(PARA_DATA *para, REAL **var, int **BINDEX) {
 
       QPort[id] += V_tmp * A;
       // Ceiling and Floor Boundary
-      A = area_xy(para, var, i, j, k);
+      // A = area_xy(para, var, i, j, k);
+        A = var[AXY][IX(i, j, k)];
 
       if (k > 0)
         V_tmp = w[IX(i, j, k - 1)];
@@ -1124,9 +1133,15 @@ int check_tile_flowrate(PARA_DATA *para, REAL **var, int **BINDEX) {
       QPort[id] += V_tmp * A;
     }
     else if (flagp[IX(i, j, k)] == INLET) {
+      /*
       Ayz = area_yz(para, var, i, j, k);
       Azx = area_zx(para, var, i, j, k);
       Axy = area_xy(para, var, i, j, k);
+      */
+      Axy = var[AXY][IX(i, j, k)];
+      Ayz = var[AYZ][IX(i, j, k)];
+      Azx = var[AZX][IX(i, j, k)];
+
 
       if (i > 0)
         V_tmp = u[IX(i - 1, j, k)];
@@ -1226,7 +1241,8 @@ REAL initial_inflows(PARA_DATA *para, REAL **var, int **BINDEX) {
     if (flagp[IX(i, j, k)] == INLET) {
       // West or East Boundary
       if (i == 0 || i == imax + 1) {
-        A = area_yz(para, var, i, j, k);
+        // A = area_yz(para, var, i, j, k);
+        A = var[AYZ][IX(i, j, k)];
 
         if (i == 0)
           V_tmp = u[IX(i, j, k)];
@@ -1237,7 +1253,8 @@ REAL initial_inflows(PARA_DATA *para, REAL **var, int **BINDEX) {
       }
       // South and North Boundary
       if (j == 0 || j == jmax + 1) {
-        A = area_zx(para, var, i, j, k);
+        // A = area_zx(para, var, i, j, k);
+        A = var[AZX][IX(i, j, k)];
 
         if (j == 0)
           V_tmp = v[IX(i, j, k)];
@@ -1248,7 +1265,8 @@ REAL initial_inflows(PARA_DATA *para, REAL **var, int **BINDEX) {
       }
       // Ceiling and Floor Boundary
       if (k == 0 || k == kmax + 1) {
-        A = area_xy(para, var, i, j, k);
+        // A = area_xy(para, var, i, j, k);
+        A = var[AXY][IX(i, j, k)];
 
         if (k == 0)
           V_tmp = w[IX(i, j, k)];

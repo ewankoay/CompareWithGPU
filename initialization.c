@@ -185,7 +185,7 @@ void set_default_parameter(PARA_DATA *para) {
 ///\return 0 if no error occurred
 ///////////////////////////////////////////////////////////////////////////////
 int set_initial_data(PARA_DATA *para, REAL **var, int **BINDEX) {
-  int i, j;
+  int i, j, k;
   int size =
       (para->geom->imax + 2) * (para->geom->jmax + 2) * (para->geom->kmax + 2);
   int flag = 0;
@@ -262,6 +262,9 @@ int set_initial_data(PARA_DATA *para, REAL **var, int **BINDEX) {
     var[RESX][i] = 0.0;
     var[RESY][i] = 0.0;
     var[RESZ][i] = 0.0;
+    var[AXY][i] = 0.0;
+    var[AYZ][i] = 0.0;
+    var[AZX][i] = 0.0;
   }
 
   // Calculate the thermal diffusivity
@@ -423,6 +426,16 @@ int set_initial_data(PARA_DATA *para, REAL **var, int **BINDEX) {
   para->bc->flowrate_net = para->bc->flowrate_in - para->bc->flowrate_out;
   // printf("net outflow is %f", para->bc->flowrate_net);
   // printf("inflow is %f", para->bc->flowrate_in);
+
+  // Calculate cell surface areas: AXY, AYZ, AZX
+  int imax = para->geom->imax, jmax = para->geom->jmax;
+  int kmax = para->geom->kmax;
+  int IMAX = imax + 2, IJMAX = (imax + 2) * (jmax + 2);
+  FOR_ALL_CELL_IJK
+    var[AXY][IX(i, j, k)] = area_xy(para, var, i, j, k);
+    var[AYZ][IX(i, j, k)] = area_yz(para, var, i, j, k);
+    var[AZX][IX(i, j, k)] = area_zx(para, var, i, j, k);
+  END_FOR
 
   /****************************************************************************
   | Set all the averaged data to 0
